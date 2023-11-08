@@ -37,7 +37,7 @@ let gameLogic = (function () {
   let scoreX = 0;
   let scoreO = 0;
   let ties = 0;
-  let round = 0;
+  let round = 1;
   let turn = 1;
   let counterX = 0;
   let counterY = 0;
@@ -62,33 +62,40 @@ let gameLogic = (function () {
     } else if (
       board[firstIndex][secondIndex] === X ||
       board[firstIndex][secondIndex] === O
-    )
+    ) {
       putMarkerRandomly(player);
+    }
     // Render board again
     gameBoard.showBoard();
   };
 
   // Play a round of tic-tac-toe
   const playRound = function () {
-    while (turn <= LAST_TURN)
+    while (turn <= LAST_TURN) {
       if (counterX === counterY) {
         putMarkerRandomly(players.playerX);
         if (turn >= 5) {
-          isGameOver(players.playerX);
+          if (isGameOver(players.playerX)) {
+            break;
+          }
         }
         turn++;
         counterX++;
       } else {
         putMarkerRandomly(players.playerO);
         if (turn >= 6) {
-          isGameOver(players.playerO);
+          if (isGameOver(players.playerO)) {
+            break;
+          }
         }
         turn++;
         counterY++;
       }
+    }
+    updateGameState();
   };
 
-  // Check if any of the winning conditions is true
+  // Check if any player is the winner
   const isGameOver = function (player) {
     // Define a winning combination and winning conditions
     const winningCombination = player.marker + player.marker + player.marker;
@@ -107,6 +114,29 @@ let gameLogic = (function () {
     } else {
       return false;
     }
+  };
+
+  // Update and reset game variables when the game ends
+  const updateGameState = function () {
+    turn = 1;
+    round++;
+    counterX = 0;
+    counterO = 0;
+    if (isGameOver(players.playerX)) {
+      console.log(`${players.playerX.name} wins!`);
+      scoreX++;
+    } else if (isGameOver(players.playerO)) {
+      console.log(`${players.playerO.name} wins!`);
+      scoreO++;
+    } else {
+      console.log('Tie!');
+      ties++;
+    }
+    console.log(`
+    Player X score: ${scoreX}
+    Player O score: ${scoreO}
+    Ties: ${ties}
+    `);
   };
 
   return { playRound, isGameOver };
