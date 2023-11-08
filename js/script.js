@@ -71,10 +71,17 @@ let gameLogic = (function () {
   const playRound = function () {
     while (turn < 10)
       if (counterX === counterY) {
+        putMarkerRandomly(players.playerX.marker);
+        turn++;
+        counterX++;
+      } else {
+        putMarkerRandomly(players.playerO.marker);
+        turn++;
+        counterY++;
       }
   };
 
-  return { putMarkerRandomly };
+  return { putMarkerRandomly, playRound };
 })();
 
 // Module responsible for handling players
@@ -89,12 +96,4 @@ let players = (function () {
   return { playerX, playerO };
 })();
 
-// gameLogic.putMarkerRandomly(players.playerX.marker);
-// gameLogic.putMarkerRandomly(players.playerO.marker);
-// gameLogic.putMarkerRandomly(players.playerX.marker);
-// gameLogic.putMarkerRandomly(players.playerO.marker);
-// gameLogic.putMarkerRandomly(players.playerX.marker);
-// gameLogic.putMarkerRandomly(players.playerO.marker);
-// gameLogic.putMarkerRandomly(players.playerX.marker);
-// gameLogic.putMarkerRandomly(players.playerO.marker);
-// gameLogic.putMarkerRandomly(players.playerX.marker);
+gameLogic.playRound();
