@@ -1,7 +1,7 @@
 // Game board module
 let gameBoard = (function () {
   // Create the game board as a 2D array
-  const board = [
+  let board = [
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
@@ -18,17 +18,26 @@ let gameBoard = (function () {
     `);
   };
 
-  // Get board
+  // Get the board
   const getBoard = function () {
     return board;
   };
-  return { showBoard, getBoard };
+
+  // Clear the board
+  const clearBoard = function () {
+    return board = [
+      ['e', 'e', 'e'],
+      ['e', 'e', 'e'],
+      ['e', 'e', 'e'],
+    ];
+  };
+  return { showBoard, getBoard, clearBoard };
 })();
 
 // Module responsible for game logic
 let gameLogic = (function () {
   // Variables related to the board
-  const board = gameBoard.getBoard();
+  let board = gameBoard.getBoard();
   const empty = 'e';
   const X = 'X';
   const O = 'O';
@@ -40,7 +49,7 @@ let gameLogic = (function () {
   let round = 1;
   let turn = 1;
   let counterX = 0;
-  let counterY = 0;
+  let counterO = 0;
   const LAST_TURN = 9;
   const SCORE_TO_WIN = 5;
 
@@ -69,7 +78,7 @@ let gameLogic = (function () {
   // Play a round of tic-tac-toe
   const playRound = function () {
     while (turn <= LAST_TURN) {
-      if (counterX === counterY) {
+      if (counterX === counterO) {
         putMarkerRandomly(players.playerX);
         if (turn >= 5) {
           if (isGameOver(players.playerX)) {
@@ -86,7 +95,7 @@ let gameLogic = (function () {
           }
         }
         turn++;
-        counterY++;
+        counterO++;
       }
     }
     updateGameState();
@@ -108,9 +117,8 @@ let gameLogic = (function () {
     ];
     if (winningPositions.includes(winningCombination)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   // Update and reset game variables when the game ends
@@ -134,7 +142,17 @@ let gameLogic = (function () {
     Player O score: ${scoreO}
     Ties: ${ties}
     `);
+    // Clear the board
+    board = gameBoard.clearBoard();
   };
+
+  // // Play the game until any player reaches scoreToWin
+  // const playGame = function (scoreToWin) {
+  //   while (scoreX < scoreToWin) {
+  //     console.table({ scoreX, scoreO });
+  //     playRound();
+  //   }
+  // };
 
   return { playRound };
 })();
@@ -151,4 +169,7 @@ let players = (function () {
   return { playerX, playerO };
 })();
 
+gameLogic.playRound();
+gameLogic.playRound();
+gameLogic.playRound();
 gameLogic.playRound();
