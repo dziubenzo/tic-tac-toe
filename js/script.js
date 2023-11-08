@@ -6,9 +6,6 @@ let gameBoard = (function () {
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
   ];
-  const empty = 'e';
-  const X = 'X';
-  const O = 'O';
 
   // Print the formatted board to the console
   const showBoard = function () {
@@ -21,6 +18,30 @@ let gameBoard = (function () {
     `);
   };
 
+  // Get board
+  const getBoard = function () {
+    return board;
+  };
+  return { showBoard, getBoard };
+})();
+
+// Module responsible for game logic
+let gameLogic = (function () {
+  // Variables related to the board
+  const empty = 'e';
+  const X = 'X';
+  const O = 'O';
+
+  // Variables for controlling game flow
+  let scoreX = 0;
+  let scoreO = 0;
+  let ties = 0;
+  let round = 0;
+  let turn = 1;
+  let counterX = 0;
+  let counterY = 0;
+  const scoreToWin = 5;
+
   // Get a random array index between 0 and 2, both inclusive
   const randomIndex = function () {
     let min = Math.ceil(0);
@@ -29,7 +50,8 @@ let gameBoard = (function () {
   };
 
   // Put a random X or Y somewhere in the board
-  const updateBoard = function (marker) {
+  const putMarkerRandomly = function (marker) {
+    const board = gameBoard.getBoard();
     const firstIndex = randomIndex();
     const secondIndex = randomIndex();
     // Check board square for emptiness
@@ -40,18 +62,19 @@ let gameBoard = (function () {
       board[firstIndex][secondIndex] === X ||
       board[firstIndex][secondIndex] === O
     )
-      updateBoard(marker);
+      putMarkerRandomly(marker);
     // Render board again
-    showBoard();
+    gameBoard.showBoard();
   };
-  return { showBoard, updateBoard };
-})();
 
-// Module responsible for game logic
-let gameLogic = (function () {
-  let scoreX = 0;
-  let scoreO = 0;
-  let ties = 0;
+  // Play a round of tic-tac-toe
+  const playRound = function () {
+    while (turn < 10)
+      if (counterX === counterY) {
+      }
+  };
+
+  return { putMarkerRandomly };
 })();
 
 // Module responsible for handling players
@@ -66,12 +89,12 @@ let players = (function () {
   return { playerX, playerO };
 })();
 
-gameBoard.updateBoard(players.playerX.marker);
-gameBoard.updateBoard(players.playerO.marker);
-gameBoard.updateBoard(players.playerX.marker);
-gameBoard.updateBoard(players.playerO.marker);
-gameBoard.updateBoard(players.playerX.marker);
-gameBoard.updateBoard(players.playerO.marker);
-gameBoard.updateBoard(players.playerX.marker);
-gameBoard.updateBoard(players.playerO.marker);
-gameBoard.updateBoard(players.playerX.marker);
+// gameLogic.putMarkerRandomly(players.playerX.marker);
+// gameLogic.putMarkerRandomly(players.playerO.marker);
+// gameLogic.putMarkerRandomly(players.playerX.marker);
+// gameLogic.putMarkerRandomly(players.playerO.marker);
+// gameLogic.putMarkerRandomly(players.playerX.marker);
+// gameLogic.putMarkerRandomly(players.playerO.marker);
+// gameLogic.putMarkerRandomly(players.playerX.marker);
+// gameLogic.putMarkerRandomly(players.playerO.marker);
+// gameLogic.putMarkerRandomly(players.playerX.marker);
