@@ -41,7 +41,8 @@ let gameLogic = (function () {
   let turn = 1;
   let counterX = 0;
   let counterY = 0;
-  const scoreToWin = 5;
+  const LAST_TURN = 9;
+  const SCORE_TO_WIN = 5;
 
   // Get a random array index between 0 and 2, both inclusive
   const randomIndex = function () {
@@ -51,31 +52,37 @@ let gameLogic = (function () {
   };
 
   // Put a random X or Y somewhere in the board
-  const putMarkerRandomly = function (marker) {
+  const putMarkerRandomly = function (player) {
     const firstIndex = randomIndex();
     const secondIndex = randomIndex();
     // Check board square for emptiness
     // Rerun the function is the square is already taken
     if (board[firstIndex][secondIndex] === empty) {
-      board[firstIndex][secondIndex] = marker;
+      board[firstIndex][secondIndex] = player.marker;
     } else if (
       board[firstIndex][secondIndex] === X ||
       board[firstIndex][secondIndex] === O
     )
-      putMarkerRandomly(marker);
+      putMarkerRandomly(player);
     // Render board again
     gameBoard.showBoard();
   };
 
   // Play a round of tic-tac-toe
   const playRound = function () {
-    while (turn < 10)
+    while (turn <= LAST_TURN)
       if (counterX === counterY) {
-        putMarkerRandomly(players.playerX.marker);
+        putMarkerRandomly(players.playerX);
+        if (turn >= 5) {
+          isGameOver(players.playerX);
+        }
         turn++;
         counterX++;
       } else {
-        putMarkerRandomly(players.playerO.marker);
+        putMarkerRandomly(players.playerO);
+        if (turn >= 6) {
+          isGameOver(players.playerO);
+        }
         turn++;
         counterY++;
       }
@@ -83,6 +90,7 @@ let gameLogic = (function () {
 
   // Check if any of the winning conditions is true
   const isGameOver = function (player) {
+    // Define a winning combination and winning conditions
     const winningCombination = player.marker + player.marker + player.marker;
     const winningPositions = [
       board[0][0] + board[0][1] + board[0][2],
@@ -94,7 +102,11 @@ let gameLogic = (function () {
       board[0][0] + board[1][1] + board[2][2],
       board[2][0] + board[1][1] + board[0][2],
     ];
-    return winningPositions;
+    if (winningPositions.includes(winningCombination)) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return { playRound, isGameOver };
@@ -113,4 +125,3 @@ let players = (function () {
 })();
 
 gameLogic.playRound();
-console.log(gameLogic.isGameOver(players.playerO));
