@@ -1,7 +1,7 @@
 // Game board module
 let gameBoard = (function () {
   // Create the game board as a 2D array
-  let board = [
+  const board = [
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
@@ -25,7 +25,7 @@ let gameBoard = (function () {
 
   // Clear the board
   const clearBoard = function () {
-    return board = [
+    return [
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
@@ -43,14 +43,10 @@ let gameLogic = (function () {
   const O = 'O';
 
   // Variables for controlling game flow
-  let scoreX = 0;
-  let scoreO = 0;
   let ties = 0;
   let round = 1;
-  let turn = 1;
-  let counterX = 0;
-  let counterO = 0;
-  const LAST_TURN = 9;
+  let totalMoves = 1;
+  const LAST_MOVE = 9;
   const SCORE_TO_WIN = 5;
 
   // Get a random array index between 0 and 2, both inclusive
@@ -77,25 +73,25 @@ let gameLogic = (function () {
 
   // Play a round of tic-tac-toe
   const playRound = function () {
-    while (turn <= LAST_TURN) {
-      if (counterX === counterO) {
+    while (totalMoves <= LAST_MOVE) {
+      if (players.playerX.moves === players.playerO.moves) {
         putMarkerRandomly(players.playerX);
-        if (turn >= 5) {
+        if (totalMoves >= 5) {
           if (isGameOver(players.playerX)) {
             break;
           }
         }
-        turn++;
-        counterX++;
+        totalMoves++;
+        players.playerX.moves++;
       } else {
         putMarkerRandomly(players.playerO);
-        if (turn >= 6) {
+        if (totalMoves >= 6) {
           if (isGameOver(players.playerO)) {
             break;
           }
         }
-        turn++;
-        counterO++;
+        totalMoves++;
+        players.playerO.moves++;
       }
     }
     updateGameState();
@@ -123,23 +119,23 @@ let gameLogic = (function () {
 
   // Update and reset game variables when the game ends
   const updateGameState = function () {
-    turn = 1;
+    totalMoves = 1;
     round++;
-    counterX = 0;
-    counterO = 0;
+    players.playerX.moves = 0;
+    players.playerO.moves = 0;
     if (isGameOver(players.playerX)) {
       console.log(`${players.playerX.name} wins!`);
-      scoreX++;
+      players.playerX.score++;
     } else if (isGameOver(players.playerO)) {
       console.log(`${players.playerO.name} wins!`);
-      scoreO++;
+      players.playerO.score++;
     } else {
       console.log('Tie!');
       ties++;
     }
     console.log(`
-    Player X score: ${scoreX}
-    Player O score: ${scoreO}
+    Player X score: ${players.playerX.score}
+    Player O score: ${players.playerO.score}
     Ties: ${ties}
     `);
     // Clear the board
@@ -161,7 +157,9 @@ let gameLogic = (function () {
 let players = (function () {
   // Factory function for creating players
   const createPlayer = function (name, marker) {
-    return { name, marker };
+    let score = 0;
+    let moves = 0;
+    return { name, marker, score, moves };
   };
   // Create two players
   const playerX = createPlayer('Misza', 'X');
@@ -169,7 +167,4 @@ let players = (function () {
   return { playerX, playerO };
 })();
 
-gameLogic.playRound();
-gameLogic.playRound();
-gameLogic.playRound();
 gameLogic.playRound();
