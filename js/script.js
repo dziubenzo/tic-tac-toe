@@ -66,20 +66,54 @@ let gameLogic = (function () {
       firstIndex = getRandomIndex();
       secondIndex = getRandomIndex();
     } while (board[firstIndex][secondIndex] !== empty);
-    // Put the player's marker there
+    // Put the computer's marker there
     board[firstIndex][secondIndex] = player.marker;
     // Render board again
     gameBoard.showBoard();
   };
 
   // Put the human player's marker manually
-  // TBC
+  const putMarkerManually = function (player) {
+    let firstIndex;
+    let secondIndex;
+    // Create an object to correlate human input with the array item
+    const correlator = {
+      1: [0][0],
+      2: [0][1],
+      3: [0][2],
+      4: [1][0],
+      5: [1][1],
+      6: [1][2],
+      7: [2][0],
+      8: [2][1],
+      9: [2][2],
+    };
+    // Make sure the selected board square is empty
+    do {
+      const answer = prompt(
+        `Type a number between 1 and 9 to put your marker.
+         Positions are as follows:
+           1  |  2  |  3  
+          ---------------
+           4  |  5  |  6
+          ---------------
+           7  |  8  |  9`
+      );
+      if (answer >= 1 && answer <= 9) {
+        firstIndex = correlator.answer[0];
+        secondIndex = correlator.answer[1];
+      }
+    } while (board[firstIndex][secondIndex] !== empty);
+    // Put the computer's marker there
+    board[firstIndex][secondIndex] = player.marker;
+    // Render board again
+    gameBoard.showBoard();
+  };
 
   // Create players
   const createPlayers = function () {
     if (players.isX === true) {
       playerX = players.createHumanPlayer();
-      console.log(playerX);
       playerO = players.createComputerPlayer();
     } else {
       playerX = players.createComputerPlayer();
@@ -161,10 +195,7 @@ let gameLogic = (function () {
 
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
-    while (
-      playerX.score < scoreToWin &&
-      playerO.score < scoreToWin
-    ) {
+    while (playerX.score < scoreToWin && playerO.score < scoreToWin) {
       playRound();
     }
   };
