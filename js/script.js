@@ -48,7 +48,7 @@ let gameLogic = (function () {
   let round = 1;
   let totalMoves = 1;
   const LAST_MOVE = 9;
-  const SCORE_TO_WIN = 5;
+  const DEFAULT_SCORE_TO_WIN = 5;
 
   // Get a random array index between 0 and 2, both inclusive
   const getRandomIndex = function () {
@@ -72,27 +72,38 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
+  // Create players
+  const createPlayers = function () {
+    if (players.isX === true) {
+      playerX = players.createHumanPlayer();
+      playerO = players.createComputerPlayer();
+    } else {
+      playerX = players.createComputerPlayer();
+      playerO = players.createHumanPlayer();
+    }
+  };
+
   // Play a round of tic-tac-toe
   const playRound = function () {
     while (totalMoves <= LAST_MOVE) {
-      if (players.playerX.moves === players.playerO.moves) {
-        putMarkerRandomly(players.playerX);
+      if (playerX.moves === playerO.moves) {
+        putMarkerRandomly(playerX);
         if (totalMoves >= 5) {
-          if (isGameOver(players.playerX)) {
+          if (isGameOver(playerX)) {
             break;
           }
         }
         totalMoves++;
-        players.playerX.moves++;
+        playerX.moves++;
       } else {
-        putMarkerRandomly(players.playerO);
+        putMarkerRandomly(playerO);
         if (totalMoves >= 6) {
-          if (isGameOver(players.playerO)) {
+          if (isGameOver(playerO)) {
             break;
           }
         }
         totalMoves++;
-        players.playerO.moves++;
+        playerO.moves++;
       }
     }
     updateGameState();
@@ -122,22 +133,22 @@ let gameLogic = (function () {
   const updateGameState = function () {
     totalMoves = 1;
     round++;
-    players.playerX.moves = 0;
-    players.playerO.moves = 0;
-    if (isGameOver(players.playerX)) {
-      console.log(`${players.playerX.name} wins!`);
-      players.playerX.score++;
-    } else if (isGameOver(players.playerO)) {
-      console.log(`${players.playerO.name} wins!`);
-      players.playerO.score++;
+    playerX.moves = 0;
+    playerO.moves = 0;
+    if (isGameOver(playerX)) {
+      console.log(`${playerX.name} wins!`);
+      playerX.score++;
+    } else if (isGameOver(playerO)) {
+      console.log(`${playerO.name} wins!`);
+      playerO.score++;
     } else {
       console.log('Tie!');
       ties++;
     }
     console.log(`
     Round: ${round - 1}
-    Player X score: ${players.playerX.score}
-    Player O score: ${players.playerO.score}
+    X score: ${playerX.score}
+    O score: ${playerO.score}
     Ties: ${ties}
     `);
     // Clear the board
@@ -147,35 +158,36 @@ let gameLogic = (function () {
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
     while (
-      players.playerX.score < scoreToWin &&
-      players.playerO.score < scoreToWin
+      playerX.score < scoreToWin &&
+      playerO.score < scoreToWin
     ) {
       playRound();
     }
   };
 
-  return { playGame };
+  return { createPlayers, playGame };
 })();
 
 // MODULE - PLAYERS
 let players = (function () {
   // Factory function for creating players
-  const createPlayer = function (name, marker) {
+  const createPlayerObject = function (name, marker) {
     let score = 0;
     let moves = 0;
     return { name, marker, score, moves };
   };
 
-  // Get the marker of a human player
-  const isX = confirm('Press OK to play as X. Press Cancel to play as O');
+  // Get the name and marker of a human player
+  const playerName = prompt('Enter your name:');
+  const isX = confirm('Press OK to play as X. Press Cancel to play as O.');
 
   // Create a human player
   const createHumanPlayer = function () {
     let humanPlayer;
     if (isX === true) {
-      humanPlayer = createPlayer('Human Player', 'X');
+      humanPlayer = createPlayerObject(`${playerName}`, 'X');
     } else {
-      humanPlayer = createPlayer('Human Player', 'O');
+      humanPlayer = createPlayerObject(`${playerName}`, 'O');
     }
     return humanPlayer;
   };
@@ -184,14 +196,15 @@ let players = (function () {
   const createComputerPlayer = function () {
     let computerPlayer;
     if (isX === true) {
-      computerPlayer = createPlayer('Computer 0', 'O');
+      computerPlayer = createPlayerObject('Computer 0', 'O');
     } else {
-      computerPlayer = createPlayer('Computer X', 'X');
+      computerPlayer = createPlayerObject('Computer X', 'X');
     }
     return computerPlayer;
   };
 
-  return { createHumanPlayer, createComputerPlayer };
+  return { createHumanPlayer, createComputerPlayer, isX };
 })();
 
+gameLogic.createPlayers();
 gameLogic.playGame(5);
