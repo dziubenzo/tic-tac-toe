@@ -19,3 +19,10 @@ let gameBoard = (function () {
 })();
 
 gameBoard.showBoard();
+
+// Get a random array index between 0 and 2, both inclusive
+function randomIndex() {
+  let min = Math.ceil(0);
+  let max = Math.floor(2);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
