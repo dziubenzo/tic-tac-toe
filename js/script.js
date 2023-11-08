@@ -45,26 +45,23 @@ let gameLogic = (function () {
   const SCORE_TO_WIN = 5;
 
   // Get a random array index between 0 and 2, both inclusive
-  const randomIndex = function () {
+  const getRandomIndex = function () {
     let min = Math.ceil(0);
     let max = Math.floor(2);
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  // Put a random X or Y somewhere in the board
+  // Put the player's marker randomly somewhere in the board
   const putMarkerRandomly = function (player) {
-    const firstIndex = randomIndex();
-    const secondIndex = randomIndex();
-    // Check board square for emptiness
-    // Rerun the function is the square is already taken
-    if (board[firstIndex][secondIndex] === empty) {
-      board[firstIndex][secondIndex] = player.marker;
-    } else if (
-      board[firstIndex][secondIndex] === X ||
-      board[firstIndex][secondIndex] === O
-    ) {
-      putMarkerRandomly(player);
-    }
+    let firstIndex;
+    let secondIndex;
+    // Find an empty board square
+    do {
+      firstIndex = getRandomIndex();
+      secondIndex = getRandomIndex();
+    } while (board[firstIndex][secondIndex] !== empty);
+    // Put the player's marker there
+    board[firstIndex][secondIndex] = player.marker;
     // Render board again
     gameBoard.showBoard();
   };
@@ -139,7 +136,7 @@ let gameLogic = (function () {
     `);
   };
 
-  return { playRound, isGameOver };
+  return { playRound };
 })();
 
 // Module responsible for handling players
