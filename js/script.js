@@ -40,8 +40,6 @@ let gameLogic = (function () {
   // Variables related to the board
   let board = gameBoard.getBoard();
   const empty = 'e';
-  const X = 'X';
-  const O = 'O';
 
   // Variables for controlling game flow
   let ties = 0;
@@ -68,7 +66,7 @@ let gameLogic = (function () {
     } while (board[firstIndex][secondIndex] !== empty);
     // Put the computer's marker there
     board[firstIndex][secondIndex] = player.marker;
-    // Render board again
+    // Print the board to the console
     gameBoard.showBoard();
   };
 
@@ -78,35 +76,36 @@ let gameLogic = (function () {
     let secondIndex;
     // Create an object to correlate human input with the array item
     const correlator = {
-      1: [0][0],
-      2: [0][1],
-      3: [0][2],
-      4: [1][0],
-      5: [1][1],
-      6: [1][2],
-      7: [2][0],
-      8: [2][1],
-      9: [2][2],
+      1: [0, 0],
+      2: [0, 1],
+      3: [0, 2],
+      4: [1, 0],
+      5: [1, 1],
+      6: [1, 2],
+      7: [2, 0],
+      8: [2, 1],
+      9: [2, 2],
     };
     // Make sure the selected board square is empty
     do {
       const answer = prompt(
-        `Type a number between 1 and 9 to put your marker.
-         Positions are as follows:
-           1  |  2  |  3  
-          ---------------
-           4  |  5  |  6
-          ---------------
-           7  |  8  |  9`
+        `Type a number between 1 and 9 to put your marker. Positions are as follows:
+
+        1  |  2  |  3  
+       ---------------
+        4  |  5  |  6
+       ---------------
+        7  |  8  |  9
+        `
       );
       if (answer >= 1 && answer <= 9) {
-        firstIndex = correlator.answer[0];
-        secondIndex = correlator.answer[1];
+        firstIndex = correlator[answer][0];
+        secondIndex = correlator[answer][1];
       }
     } while (board[firstIndex][secondIndex] !== empty);
-    // Put the computer's marker there
+    // Put the player's marker there
     board[firstIndex][secondIndex] = player.marker;
-    // Render board again
+    // Print the board to the console
     gameBoard.showBoard();
   };
 
@@ -125,7 +124,11 @@ let gameLogic = (function () {
   const playRound = function () {
     while (totalMoves <= LAST_MOVE) {
       if (playerX.moves === playerO.moves) {
-        putMarkerRandomly(playerX);
+        if (playerX.isHuman) {
+          putMarkerManually(playerX);
+        } else {
+          putMarkerRandomly(playerX);
+        }
         if (totalMoves >= 5) {
           if (isGameOver(playerX)) {
             break;
@@ -134,7 +137,11 @@ let gameLogic = (function () {
         totalMoves++;
         playerX.moves++;
       } else {
-        putMarkerRandomly(playerO);
+        if (playerO.isHuman) {
+          putMarkerManually(playerO);
+        } else {
+          putMarkerRandomly(playerO);
+        }
         if (totalMoves >= 6) {
           if (isGameOver(playerO)) {
             break;
@@ -185,8 +192,8 @@ let gameLogic = (function () {
     }
     console.log(`
     Round: ${round - 1}
-    X score: ${playerX.score}
-    O score: ${playerO.score}
+    ${playerX.name}'s score (as X): ${playerX.score}
+    ${playerO.name}'s score (as O): ${playerO.score}
     Ties: ${ties}
     `);
     // Clear the board
@@ -231,9 +238,9 @@ let players = (function () {
   const createComputerPlayer = function () {
     let computerPlayer;
     if (isX === true) {
-      computerPlayer = createPlayerObject('Computer 0', 'O', false);
+      computerPlayer = createPlayerObject('Computer', 'O', false);
     } else {
-      computerPlayer = createPlayerObject('Computer X', 'X', false);
+      computerPlayer = createPlayerObject('Computer', 'X', false);
     }
     return computerPlayer;
   };
