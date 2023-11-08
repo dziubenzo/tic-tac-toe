@@ -19,10 +19,17 @@ let gameBoard = (function () {
     `);
   };
 
+  // Get a random array index between 0 and 2, both inclusive
+  const randomIndex = function () {
+    let min = Math.ceil(0);
+    let max = Math.floor(2);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
+
   // Put a random X somewhere in the board if the array is empty
   const updateBoard = function () {
-    const firstIndex = gameLogic.randomIndex();
-    const secondIndex = gameLogic.randomIndex();
+    const firstIndex = randomIndex();
+    const secondIndex = randomIndex();
     // Check board square for emptiness
     if (board[firstIndex][secondIndex] === empty) {
       board[firstIndex][secondIndex] = 'X';
@@ -35,14 +42,12 @@ let gameBoard = (function () {
 
 // Module responsible for game logic
 let gameLogic = (function () {
-  // Get a random array index between 0 and 2, both inclusive
-  const randomIndex = function () {
-    let min = Math.ceil(0);
-    let max = Math.floor(2);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
-  return { randomIndex };
+  // Create two players
+  let player1 = createPlayer('Misza', 'X');
+  let player2 = createPlayer('Adolf', 'O');
 })();
 
-gameBoard.showBoard();
-gameBoard.updateBoard();
+// Factory function for creating players
+function createPlayer(name, marker) {
+  return { name, marker };
+}
