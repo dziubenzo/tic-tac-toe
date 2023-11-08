@@ -165,10 +165,33 @@ let players = (function () {
     let moves = 0;
     return { name, marker, score, moves };
   };
-  // Create two players
-  const playerX = createPlayer('Misza', 'X');
-  const playerO = createPlayer('Adolf', 'O');
-  return { playerX, playerO };
+
+  // Get the marker of a human player
+  const isX = confirm('Press OK to play as X. Press Cancel to play as O');
+
+  // Create a human player
+  const createHumanPlayer = function () {
+    let humanPlayer;
+    if (isX === true) {
+      humanPlayer = createPlayer('Human Player', 'X');
+    } else {
+      humanPlayer = createPlayer('Human Player', 'O');
+    }
+    return humanPlayer;
+  };
+
+  // Create a computer player
+  const createComputerPlayer = function () {
+    let computerPlayer;
+    if (isX === true) {
+      computerPlayer = createPlayer('Computer 0', 'O');
+    } else {
+      computerPlayer = createPlayer('Computer X', 'X');
+    }
+    return computerPlayer;
+  };
+
+  return { createHumanPlayer, createComputerPlayer };
 })();
 
 gameLogic.playGame(5);
