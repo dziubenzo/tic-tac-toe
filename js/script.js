@@ -1,7 +1,7 @@
-// Game board module
+// MODULE - GAME BOARD
 let gameBoard = (function () {
-  // Create the game board as a 2D array
-  const board = [
+  // Create an empty game board as a 2D array
+  let board = [
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
     ['e', 'e', 'e'],
@@ -25,16 +25,17 @@ let gameBoard = (function () {
 
   // Clear the board
   const clearBoard = function () {
-    return [
+    board = [
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
     ];
+    return board;
   };
   return { showBoard, getBoard, clearBoard };
 })();
 
-// Module responsible for game logic
+// MODULE - GAME LOGIC
 let gameLogic = (function () {
   // Variables related to the board
   let board = gameBoard.getBoard();
@@ -134,6 +135,7 @@ let gameLogic = (function () {
       ties++;
     }
     console.log(`
+    Round: ${round - 1}
     Player X score: ${players.playerX.score}
     Player O score: ${players.playerO.score}
     Ties: ${ties}
@@ -142,18 +144,20 @@ let gameLogic = (function () {
     board = gameBoard.clearBoard();
   };
 
-  // // Play the game until any player reaches scoreToWin
-  // const playGame = function (scoreToWin) {
-  //   while (scoreX < scoreToWin) {
-  //     console.table({ scoreX, scoreO });
-  //     playRound();
-  //   }
-  // };
+  // Play the game until any player reaches scoreToWin
+  const playGame = function (scoreToWin) {
+    while (
+      players.playerX.score < scoreToWin &&
+      players.playerO.score < scoreToWin
+    ) {
+      playRound();
+    }
+  };
 
-  return { playRound };
+  return { playGame };
 })();
 
-// Module responsible for handling players
+// MODULE - PLAYERS
 let players = (function () {
   // Factory function for creating players
   const createPlayer = function (name, marker) {
@@ -167,4 +171,4 @@ let players = (function () {
   return { playerX, playerO };
 })();
 
-gameLogic.playRound();
+gameLogic.playGame(5);
