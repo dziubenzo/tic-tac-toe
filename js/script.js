@@ -57,7 +57,7 @@ let gameLogic = (function () {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  // Put the player's marker randomly somewhere in the board
+  // Put the computer's marker randomly somewhere in the board
   const putMarkerRandomly = function (player) {
     let firstIndex;
     let secondIndex;
@@ -72,10 +72,14 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
+  // Put the human player's marker manually
+  // TBC
+
   // Create players
   const createPlayers = function () {
     if (players.isX === true) {
       playerX = players.createHumanPlayer();
+      console.log(playerX);
       playerO = players.createComputerPlayer();
     } else {
       playerX = players.createComputerPlayer();
@@ -171,10 +175,10 @@ let gameLogic = (function () {
 // MODULE - PLAYERS
 let players = (function () {
   // Factory function for creating players
-  const createPlayerObject = function (name, marker) {
+  const createPlayerObject = function (name, marker, isHuman) {
     let score = 0;
     let moves = 0;
-    return { name, marker, score, moves };
+    return { name, marker, isHuman, score, moves };
   };
 
   // Get the name and marker of a human player
@@ -185,9 +189,9 @@ let players = (function () {
   const createHumanPlayer = function () {
     let humanPlayer;
     if (isX === true) {
-      humanPlayer = createPlayerObject(`${playerName}`, 'X');
+      humanPlayer = createPlayerObject(`${playerName}`, 'X', true);
     } else {
-      humanPlayer = createPlayerObject(`${playerName}`, 'O');
+      humanPlayer = createPlayerObject(`${playerName}`, 'O', true);
     }
     return humanPlayer;
   };
@@ -196,9 +200,9 @@ let players = (function () {
   const createComputerPlayer = function () {
     let computerPlayer;
     if (isX === true) {
-      computerPlayer = createPlayerObject('Computer 0', 'O');
+      computerPlayer = createPlayerObject('Computer 0', 'O', false);
     } else {
-      computerPlayer = createPlayerObject('Computer X', 'X');
+      computerPlayer = createPlayerObject('Computer X', 'X', false);
     }
     return computerPlayer;
   };
