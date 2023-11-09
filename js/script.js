@@ -248,6 +248,12 @@ let players = (function () {
 
 // MODULE - DISPLAY CONTROLLER
 let displayController = (function () {
+  // Init function
+  const init = function () {
+    showModal();
+    listenForButtons();
+    startGame();
+  };
   // Show modal on page load
   const showModal = function () {
     const modal = document.querySelector('dialog');
@@ -294,10 +300,7 @@ let displayController = (function () {
       gameLogic.playGame(2);
     });
   };
-  return { showModal, listenForButtons, startGame };
+  return { init };
 })();
 
-// Hide inside a module and use an init() module to run the app
-displayController.showModal();
-displayController.listenForButtons();
-displayController.startGame();
+displayController.init();
