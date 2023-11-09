@@ -248,10 +248,17 @@ let players = (function () {
   return { createHumanPlayer, createComputerPlayer };
 })();
 
+// MODULE - DISPLAY CONTROLLER
+let displayController = (function () {
+  const modalForm = document.querySelector('#modal-form');
+  return { modalForm }
+}) 
+
 // gameLogic.createPlayers();
 // gameLogic.playGame(5);
 
 // Experiments with the modal
 const modal = document.querySelector('dialog');
-console.log(modal);
 modal.showModal();
+
+console.log(displayController.modalForm)

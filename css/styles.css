@@ -89,3 +89,7 @@ dialog input[type='radio'] {
 input[type='radio']:checked + label {
   background-color: var(--main-clr);
 }
+
+.submit-button button {
+  grid-column: 1 / 4;
+}
