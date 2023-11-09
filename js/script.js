@@ -109,14 +109,17 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
-  // Create players
-  const createPlayers = function (playerX, playerY) {
-    if (players.isX === true) {
-      playerX = players.createHumanPlayer();
-      playerO = players.createComputerPlayer();
+  // Create the right players based on modal form data
+  const createPlayers = function (formData) {
+    if (formData.playerX === 'human') {
+      playerX = players.createHumanPlayer(formData.playerXName, 'X');
     } else {
-      playerX = players.createComputerPlayer();
-      playerO = players.createHumanPlayer();
+      playerX = players.createComputerPlayer('X');
+    }
+    if (formData.playerO === 'human') {
+      playerO = players.createHumanPlayer(formData.playerOName, 'O');
+    } else {
+      playerO = players.createComputerPlayer('O');
     }
   };
 
@@ -220,23 +223,23 @@ let players = (function () {
   };
 
   // Create a human player
-  const createHumanPlayer = function () {
+  const createHumanPlayer = function (name, marker) {
     let humanPlayer;
-    if (isX === true) {
-      humanPlayer = createPlayerObject(`${playerName}`, 'X', true);
+    if (marker === 'X') {
+      humanPlayer = createPlayerObject(`${name}`, 'X', true);
     } else {
-      humanPlayer = createPlayerObject(`${playerName}`, 'O', true);
+      humanPlayer = createPlayerObject(`${name}`, 'O', true);
     }
     return humanPlayer;
   };
 
   // Create a computer player
-  const createComputerPlayer = function () {
+  const createComputerPlayer = function (marker) {
     let computerPlayer;
-    if (isX === true) {
-      computerPlayer = createPlayerObject('Computer', 'O', false);
-    } else {
+    if (marker === 'X') {
       computerPlayer = createPlayerObject('Computer', 'X', false);
+    } else {
+      computerPlayer = createPlayerObject('Computer', 'O', false);
     }
     return computerPlayer;
   };
@@ -277,8 +280,8 @@ let displayController = (function () {
     });
   };
 
-  // Use modal form data to return an object with information about the type of players to create
-  const getPlayerTypes = function () {
+  // Use modal form data to create players and start the game
+  const startGame = function () {
     const modalForm = document.querySelector('#modal-form');
     modalForm.addEventListener('submit', () => {
       const playersToCreate = {
@@ -287,16 +290,14 @@ let displayController = (function () {
         playerXName: modalForm.elements['player-x-name'].value,
         playerOName: modalForm.elements['player-o-name'].value,
       };
-      return playersToCreate;
+      gameLogic.createPlayers(playersToCreate);
+      gameLogic.playGame(2);
     });
   };
-  return { showModal, listenForButtons, getPlayerTypes };
+  return { showModal, listenForButtons, startGame };
 })();
-
-// gameLogic.createPlayers();
-// gameLogic.playGame(5);
 
 // Hide inside a module and use an init() module to run the app
 displayController.showModal();
 displayController.listenForButtons();
-displayController.getPlayerTypes();
+displayController.startGame();
