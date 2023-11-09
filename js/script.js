@@ -220,8 +220,8 @@ let players = (function () {
   };
 
   // Get the name and marker of a human player
-  const playerName = prompt('Enter your name:');
-  const isX = confirm('Press OK to play as X. Press Cancel to play as O.');
+  // const playerName = prompt('Enter your name:');
+  // const isX = confirm('Press OK to play as X. Press Cancel to play as O.');
 
   // Create a human player
   const createHumanPlayer = function () {
@@ -244,9 +244,14 @@ let players = (function () {
     }
     return computerPlayer;
   };
-
-  return { createHumanPlayer, createComputerPlayer, isX };
+  // Add isX to the return
+  return { createHumanPlayer, createComputerPlayer };
 })();
 
-gameLogic.createPlayers();
-gameLogic.playGame(5);
+// gameLogic.createPlayers();
+// gameLogic.playGame(5);
+
+// Experiments with the modal
+const modal = document.querySelector('dialog');
+console.log(modal);
+modal.showModal();
