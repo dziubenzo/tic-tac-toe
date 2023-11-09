@@ -110,7 +110,7 @@ let gameLogic = (function () {
   };
 
   // Create players
-  const createPlayers = function () {
+  const createPlayers = function (playerX, playerY) {
     if (players.isX === true) {
       playerX = players.createHumanPlayer();
       playerO = players.createComputerPlayer();
@@ -219,10 +219,6 @@ let players = (function () {
     return { name, marker, isHuman, score, moves };
   };
 
-  // Get the name and marker of a human player
-  // const playerName = prompt('Enter your name:');
-  // const isX = confirm('Press OK to play as X. Press Cancel to play as O.');
-
   // Create a human player
   const createHumanPlayer = function () {
     let humanPlayer;
@@ -244,7 +240,6 @@ let players = (function () {
     }
     return computerPlayer;
   };
-  // Add isX to the return
   return { createHumanPlayer, createComputerPlayer };
 })();
 
@@ -257,9 +252,6 @@ let displayController = (function () {
   };
 
   // Show or hide the name input field and label when the human or computer button is clicked
-  // Focus on the name input field if the former is clicked
-  // Make name input field(s) required if the human button is clicked
-  // Do the opposite if the computer button is clicked
   const listenForButtons = function () {
     const modalButtons = document.querySelectorAll('input[type="radio"]');
     modalButtons.forEach((button) => {
@@ -272,7 +264,9 @@ let displayController = (function () {
         if (button.id.includes('human')) {
           nameLabel.removeAttribute('hidden', 'hidden');
           nameInput.removeAttribute('hidden', 'hidden');
+          // Make the name input field required if the human button is clicked
           inputField.setAttribute('required', 'required');
+          // Focus on the name input field if the former is clicked
           inputField.focus();
         } else {
           nameLabel.setAttribute('hidden', 'hidden');
@@ -283,22 +277,26 @@ let displayController = (function () {
     });
   };
 
-  // Use modal form data to create the right players and start a game
-  const createGame = function () {
+  // Use modal form data to return an object with information about the type of players to create
+  const getPlayerTypes = function () {
     const modalForm = document.querySelector('#modal-form');
     modalForm.addEventListener('submit', () => {
-      console.log(modalForm.elements['player-x'].value);
-      console.log(modalForm.elements['player-o'].value);
-      console.log(modalForm.elements['player-x-name'].value);
-      console.log(modalForm.elements['player-o-name'].value);
+      const playersToCreate = {
+        playerX: modalForm.elements['player-x'].value,
+        playerO: modalForm.elements['player-o'].value,
+        playerXName: modalForm.elements['player-x-name'].value,
+        playerOName: modalForm.elements['player-o-name'].value,
+      };
+      return playersToCreate;
     });
   };
-  return { showModal, listenForButtons, createGame };
+  return { showModal, listenForButtons, getPlayerTypes };
 })();
 
 // gameLogic.createPlayers();
 // gameLogic.playGame(5);
 
+// Hide inside a module and use an init() module to run the app
 displayController.showModal();
 displayController.listenForButtons();
-displayController.createGame();
+displayController.getPlayerTypes();
