@@ -8,21 +8,67 @@ body {
   font-family: var(--fonts);
 }
 
+dialog {
+  border-radius: 16px;
+}
+
+.modal-container {
+  display: grid;
+}
+
+.modal-title {
+  place-self: center;
+}
+
+dialog form {
+  display: grid;
+  gap: 16px;
+}
+
+form .form-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
 dialog::backdrop {
   background-color: blur(8px);
 }
 
-dialog label[for^='player'] {
-  width: 100px;
-  height: 100px;
+div[class^='player'] {
+  position: relative;
+}
+
+.form-wrapper p,
+.name-label label {
+  font-weight: bold;
+}
+
+.form-wrapper .name-input {
+  grid-area: 2 / 2 / 3 / 4;
+}
+
+.name-input input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+div[class^='player'] label[for^='player'] {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 4px;
   cursor: pointer;
 }
 
-dialog input[type='radio']:checked + label {
-  background-color: red;
+dialog input[type='radio'] {
+  /* display: none; */
+  position: absolute;
+  width: 20%;
+  appearance: none;
 }
 
-dialog input[type='radio'] {
-  opacity: 0.01;
-  z-index: 100;
+input[type='radio']:checked + label {
+  background-color: rgb(255, 185, 55);
 }
