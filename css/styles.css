@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Karla&display=swap');
 
 :root {
-  --fonts: 'Karla', sans-serif;
+  --main-font: 'Karla', sans-serif;
+  --modal-title-font: 'Agbalumo', sans-serif;
   --main-clr: rgb(255, 185, 55);
 }
 
@@ -10,7 +11,7 @@
 }
 
 body {
-  font-family: var(--fonts);
+  font-family: var(--main-font);
 }
 
 dialog {
@@ -22,13 +23,15 @@ dialog {
 }
 
 .modal-title {
+  font-family: var(--modal-title-font);
   place-self: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  margin: 16px;
 }
 
 dialog form {
   display: grid;
-  gap: 16px;
+  gap: 8px;
 }
 
 form .form-wrapper {
@@ -59,7 +62,7 @@ dialog::backdrop {
   outline: none;
   height: 30px;
   font-size: 0.9rem;
-  font-family: var(--fonts);
+  font-family: var(--main-font);
   padding: 8px;
   border-radius: 4px;
   border: 1px solid rgb(211, 211, 211);
