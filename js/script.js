@@ -250,19 +250,35 @@ let players = (function () {
 
 // MODULE - DISPLAY CONTROLLER
 let displayController = (function () {
-  const modal = document.querySelector('dialog');
   const modalForm = document.querySelector('#modal-form');
 
   // Show modal on page load
   const showModal = function () {
+    const modal = document.querySelector('dialog');
     modal.showModal();
   };
-  return { showModal };
+
+  // Show name input field and label when the human button is clicked
+  // Focus on the field
+  const displayNameField = function () {
+    const humanButtons = document.querySelectorAll('input[id*="human"]');
+    humanButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const nameLabel =
+          button.parentNode.parentNode.querySelector('.name-label');
+        const nameInput =
+          button.parentNode.parentNode.querySelector('.name-input');
+        nameLabel.removeAttribute('hidden');
+        nameInput.removeAttribute('hidden');
+        nameInput.querySelector('input').focus();
+      });
+    });
+  };
+  return { showModal, displayNameField };
 })();
 
 // gameLogic.createPlayers();
 // gameLogic.playGame(5);
 
 displayController.showModal();
-
-console.log(displayController.modalForm);
+displayController.displayNameField();
