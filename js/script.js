@@ -250,15 +250,19 @@ let players = (function () {
 
 // MODULE - DISPLAY CONTROLLER
 let displayController = (function () {
+  const modal = document.querySelector('dialog');
   const modalForm = document.querySelector('#modal-form');
-  return { modalForm }
-}) 
+
+  // Show modal on page load
+  const showModal = function () {
+    modal.showModal();
+  };
+  return { showModal };
+})();
 
 // gameLogic.createPlayers();
 // gameLogic.playGame(5);
 
-// Experiments with the modal
-const modal = document.querySelector('dialog');
-modal.showModal();
+displayController.showModal();
 
-console.log(displayController.modalForm)
+console.log(displayController.modalForm);

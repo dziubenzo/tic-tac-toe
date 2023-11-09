@@ -103,5 +103,5 @@ input[type='radio']:checked + label {
 }
 
 .submit-button button:hover {
-  box-shadow: 2px 2px 8px rgb(230, 230, 230);
+  cursor: pointer;
 }
