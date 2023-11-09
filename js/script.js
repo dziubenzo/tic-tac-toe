@@ -250,8 +250,6 @@ let players = (function () {
 
 // MODULE - DISPLAY CONTROLLER
 let displayController = (function () {
-  const modalForm = document.querySelector('#modal-form');
-
   // Show modal on page load
   const showModal = function () {
     const modal = document.querySelector('dialog');
@@ -279,7 +277,18 @@ let displayController = (function () {
       });
     });
   };
-  return { showModal, listenForButtons };
+
+  // Use modal form data to create the right players and start a game
+  const createGame = function () {
+    const modalForm = document.querySelector('#modal-form');
+    modalForm.addEventListener('submit', () => {
+      console.log(modalForm.elements['player-x'].value);
+      console.log(modalForm.elements['player-o'].value);
+      console.log(modalForm.elements['player-x-name'].value);
+      console.log(modalForm.elements['player-o-name'].value);
+    });
+  };
+  return { showModal, listenForButtons, createGame };
 })();
 
 // gameLogic.createPlayers();
@@ -287,3 +296,4 @@ let displayController = (function () {
 
 displayController.showModal();
 displayController.listenForButtons();
+displayController.createGame();
