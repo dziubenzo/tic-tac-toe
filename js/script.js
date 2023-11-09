@@ -258,8 +258,8 @@ let displayController = (function () {
     modal.showModal();
   };
 
-  // Show name input field and label when the human button is clicked
-  // Focus on the field
+  // Show the name input field and label when the human button is clicked
+  // Focus on the input field
   const displayNameField = function () {
     const humanButtons = document.querySelectorAll('input[id*="human"]');
     humanButtons.forEach((button) => {
@@ -268,13 +268,28 @@ let displayController = (function () {
           button.parentNode.parentNode.querySelector('.name-label');
         const nameInput =
           button.parentNode.parentNode.querySelector('.name-input');
-        nameLabel.removeAttribute('hidden');
-        nameInput.removeAttribute('hidden');
+        nameLabel.removeAttribute('hidden', 'hidden');
+        nameInput.removeAttribute('hidden', 'hidden');
         nameInput.querySelector('input').focus();
       });
     });
   };
-  return { showModal, displayNameField };
+
+  // Hide the name input field and label when the computer button is clicked
+  const hideNameField = function () {
+    const computerButtons = document.querySelectorAll('input[id*="computer"]');
+    computerButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const nameLabel =
+          button.parentNode.parentNode.querySelector('.name-label');
+        const nameInput =
+          button.parentNode.parentNode.querySelector('.name-input');
+        nameLabel.setAttribute('hidden', 'hidden');
+        nameInput.setAttribute('hidden', 'hidden');
+      });
+    });
+  };
+  return { showModal, displayNameField, hideNameField };
 })();
 
 // gameLogic.createPlayers();
@@ -282,3 +297,4 @@ let displayController = (function () {
 
 displayController.showModal();
 displayController.displayNameField();
+displayController.hideNameField();
