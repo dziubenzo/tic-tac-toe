@@ -258,43 +258,32 @@ let displayController = (function () {
     modal.showModal();
   };
 
-  // Show the name input field and label when the human button is clicked
-  // Focus on the input field
-  const displayNameField = function () {
-    const humanButtons = document.querySelectorAll('input[id*="human"]');
-    humanButtons.forEach((button) => {
+  // Show or hide the name input field and label when the human or computer button is clicked
+  // Focus on the name input field if the former is clicked
+  const listenForButtons = function () {
+    const modalButtons = document.querySelectorAll('input[type="radio"]');
+    modalButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const nameLabel =
           button.parentNode.parentNode.querySelector('.name-label');
         const nameInput =
           button.parentNode.parentNode.querySelector('.name-input');
-        nameLabel.removeAttribute('hidden', 'hidden');
-        nameInput.removeAttribute('hidden', 'hidden');
-        nameInput.querySelector('input').focus();
+        if (button.id.includes('human')) {
+          nameLabel.removeAttribute('hidden', 'hidden');
+          nameInput.removeAttribute('hidden', 'hidden');
+          nameInput.querySelector('input').focus();
+        } else {
+          nameLabel.setAttribute('hidden', 'hidden');
+          nameInput.setAttribute('hidden', 'hidden');
+        }
       });
     });
   };
-
-  // Hide the name input field and label when the computer button is clicked
-  const hideNameField = function () {
-    const computerButtons = document.querySelectorAll('input[id*="computer"]');
-    computerButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const nameLabel =
-          button.parentNode.parentNode.querySelector('.name-label');
-        const nameInput =
-          button.parentNode.parentNode.querySelector('.name-input');
-        nameLabel.setAttribute('hidden', 'hidden');
-        nameInput.setAttribute('hidden', 'hidden');
-      });
-    });
-  };
-  return { showModal, displayNameField, hideNameField };
+  return { showModal, listenForButtons };
 })();
 
 // gameLogic.createPlayers();
 // gameLogic.playGame(5);
 
 displayController.showModal();
-displayController.displayNameField();
-displayController.hideNameField();
+displayController.listenForButtons();
