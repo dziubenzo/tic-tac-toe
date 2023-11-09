@@ -16,7 +16,12 @@
           <div class="form-wrapper">
             <p>Player X:</p>
             <div class="player-x-human">
-              <input type="radio" name="player-x" id="player-x-human" />
+              <input
+                type="radio"
+                name="player-x"
+                id="player-x-human"
+                required
+              />
               <label for="player-x-human">Human</label>
             </div>
             <div class="player-x-computer">
@@ -27,13 +32,18 @@
               <label for="player-x-name">Name:</label>
             </div>
             <div class="name-input player-x" hidden>
-              <input type="text" name="player-x-name" id="player-x-name">
+              <input type="text" name="player-x-name" id="player-x-name" />
             </div>
           </div>
           <div class="form-wrapper">
             <p>Player O:</p>
             <div class="player-o-human">
-              <input type="radio" name="player-o" id="player-o-human" />
+              <input
+                type="radio"
+                name="player-o"
+                id="player-o-human"
+                required
+              />
               <label for="player-o-human">Human</label>
             </div>
             <div class="player-o-computer">
@@ -44,7 +54,7 @@
               <label for="player-o-name">Name:</label>
             </div>
             <div class="name-input player-o" hidden>
-              <input type="text" name="player-o-name" id="player-o-name">
+              <input type="text" name="player-o-name" id="player-o-name" />
             </div>
           </div>
           <div class="form-wrapper submit-button">

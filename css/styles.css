@@ -92,4 +92,16 @@ input[type='radio']:checked + label {
 
 .submit-button button {
   grid-column: 1 / 4;
+  height: 50px;
+  font-family: var(--main-font);
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: 1px solid var(--main-clr);
+  border-radius: 12px;
+  background-color: var(--main-clr);
+  margin-top: 16px;
+}
+
+.submit-button button:hover {
+  box-shadow: 2px 2px 8px rgb(230, 230, 230);
 }
