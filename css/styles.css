@@ -11,3 +11,18 @@ body {
 dialog::backdrop {
   background-color: blur(8px);
 }
+
+dialog label[for^='player'] {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+dialog input[type='radio']:checked + label {
+  background-color: red;
+}
+
+dialog input[type='radio'] {
+  opacity: 0.01;
+  z-index: 100;
+}
