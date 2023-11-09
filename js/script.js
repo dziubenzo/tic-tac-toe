@@ -258,6 +258,8 @@ let displayController = (function () {
 
   // Show or hide the name input field and label when the human or computer button is clicked
   // Focus on the name input field if the former is clicked
+  // Make name input field(s) required if the human button is clicked
+  // Do the opposite if the computer button is clicked
   const listenForButtons = function () {
     const modalButtons = document.querySelectorAll('input[type="radio"]');
     modalButtons.forEach((button) => {
@@ -266,13 +268,16 @@ let displayController = (function () {
           button.parentNode.parentNode.querySelector('.name-label');
         const nameInput =
           button.parentNode.parentNode.querySelector('.name-input');
+        const inputField = nameInput.querySelector('input');
         if (button.id.includes('human')) {
           nameLabel.removeAttribute('hidden', 'hidden');
           nameInput.removeAttribute('hidden', 'hidden');
-          nameInput.querySelector('input').focus();
+          inputField.setAttribute('required', 'required');
+          inputField.focus();
         } else {
           nameLabel.setAttribute('hidden', 'hidden');
           nameInput.setAttribute('hidden', 'hidden');
+          inputField.removeAttribute('required', 'required');
         }
       });
     });
