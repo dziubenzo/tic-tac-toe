@@ -211,8 +211,8 @@ let gameLogic = (function () {
     board = gameBoard.clearBoard();
   };
 
-  // Update static variables on the main page
-  const updateStaticVariables = function () {
+  // Set static variables on the main page
+  const setStaticVariables = function () {
     playerXName.textContent = playerX.name;
     playerOName.textContent = playerO.name;
     firstToValue.textContent = firstTo;
@@ -228,7 +228,7 @@ let gameLogic = (function () {
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
     firstTo = scoreToWin;
-    updateStaticVariables();
+    setStaticVariables();
     while (playerX.score < scoreToWin && playerO.score < scoreToWin) {
       playRound();
       updateDynamicVariables();

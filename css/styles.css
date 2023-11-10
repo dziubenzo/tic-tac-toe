@@ -5,6 +5,7 @@
   --modal-title-font: 'Agbalumo', sans-serif;
   --marker-font: 'Gluten', sans-serif;
   --main-clr: rgb(255, 185, 55);
+  --background-clr: rgb(200, 200, 200);
   --board-border-clr: rgb(116, 116, 116);
   --board-size: 250px;
 }
@@ -19,7 +20,7 @@ body {
   padding: 0;
   height: 100%;
   font-family: var(--main-font);
-  background-color: rgb(200, 200, 200);
+  background-color: var(--background-clr);
 }
 
 /* Modal rules */
@@ -53,7 +54,8 @@ form .form-wrapper {
 }
 
 dialog::backdrop {
-  background-color: blur(8px);
+  background-color: var(--background-clr);
+  backdrop-filter: blur(4px) grayscale(100%);;
 }
 
 .form-wrapper p,
