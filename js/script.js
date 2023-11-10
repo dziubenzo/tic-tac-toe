@@ -45,8 +45,16 @@ let gameLogic = (function () {
   let ties = 0;
   let round = 1;
   let totalMoves = 1;
+  let firstTo = 0;
   const LAST_MOVE = 9;
-  const DEFAULT_SCORE_TO_WIN = 5;
+
+  // DOM elements
+  const playerXName = document.querySelector('header .player-x');
+  const playerOName = document.querySelector('header .player-o');
+  const firstToValue = document.querySelector('header .first-to-value');
+  const tiesCount = document.querySelector('header .ties-value');
+  const scoreX = document.querySelector('.score-x .score');
+  const scoreO = document.querySelector('.score-o .score');
 
   // Get a random array index between 0 and 2, both inclusive
   const getRandomIndex = function () {
@@ -203,10 +211,27 @@ let gameLogic = (function () {
     board = gameBoard.clearBoard();
   };
 
+  // Update static variables on the main page
+  const updateStaticVariables = function () {
+    playerXName.textContent = playerX.name;
+    playerOName.textContent = playerO.name;
+    firstToValue.textContent = firstTo;
+  };
+
+  // Update dynamic variables on the main page
+  const updateDynamicVariables = function () {
+    tiesCount.textContent = ties;
+    scoreX.textContent = playerX.score;
+    scoreO.textContent = playerO.score;
+  };
+
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
+    firstTo = scoreToWin;
+    updateStaticVariables();
     while (playerX.score < scoreToWin && playerO.score < scoreToWin) {
       playRound();
+      updateDynamicVariables();
     }
   };
 
@@ -250,8 +275,8 @@ let players = (function () {
 let displayController = (function () {
   // Init function
   const init = function () {
-    // showModal();
-    // listenForButtons();
+    showModal();
+    listenForButtons();
     startGame();
   };
   // Show modal on page load
@@ -297,7 +322,7 @@ let displayController = (function () {
         playerOName: modalForm.elements['player-o-name'].value,
       };
       gameLogic.createPlayers(playersToCreate);
-      gameLogic.playGame(2);
+      gameLogic.playGame(5);
     });
   };
   return { init };
