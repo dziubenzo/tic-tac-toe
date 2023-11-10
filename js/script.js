@@ -48,6 +48,7 @@ let gameLogic = (function () {
   let firstTo = 0;
   let firstIndex;
   let secondIndex;
+  let square;
 
   const DELAY = 500;
   const LAST_MOVE = 9;
@@ -83,24 +84,24 @@ let gameLogic = (function () {
 
   // Put the computer's marker randomly somewhere in the board
   const putMarkerRandomly = function (player) {
-    let firstIndex;
-    let secondIndex;
     // Find an empty board square
     do {
       firstIndex = getRandomIndex();
       secondIndex = getRandomIndex();
     } while (board[firstIndex][secondIndex] !== empty);
-    // Put the computer's marker there
+    // Add the computer's marker to the array
     board[firstIndex][secondIndex] = player.marker;
+    // Find correlator's key based on value
+    const value = [firstIndex, secondIndex];
+    let key = Object.keys(correlator).filter(
+      (key) => JSON.stringify(correlator[key]) === JSON.stringify(value)
+    );
+
+    // Display the marker on the board
+    document.querySelector(`.square[data-id="${key}"] > span`).textContent =
+      player.marker.toLowerCase();
     // Print the board to the console
     gameBoard.showBoard();
-  };
-
-  // Listen for square click
-  const listenForClick = function () {
-    boardDOM.addEventListener('click', (event) => {
-      return event.target.getAttribute('data-id');
-    });
   };
 
   // Check if the square clicked is a valid one
@@ -115,8 +116,11 @@ let gameLogic = (function () {
 
   // Put the human player's marker manually
   const putMarkerManually = function (player) {
-    // Put the player's marker
+    // Add the player's marker to the array
     board[firstIndex][secondIndex] = player.marker;
+    // Display the marker on the board
+    document.querySelector(`.square[data-id="${square}"] > span`).textContent =
+      player.marker.toLowerCase();
     // Print the board to the console
     gameBoard.showBoard();
   };
@@ -135,18 +139,29 @@ let gameLogic = (function () {
     }
   };
 
-  // Put
-
   // Play a round of tic-tac-toe
   const playRound = function () {
-    for (totalMoves; totalMoves <= LAST_MOVE; totalMoves++) {
-      boardDOM.addEventListener('click', (event) => {
+    boardDOM.addEventListener('click', (event) => {
+      square = event.target.getAttribute('data-id');
+      if (isEmptySquare(square)) {
+        if (
+          (isGameOver(playerX) && totalMoves >= 5) ||
+          (isGameOver(playerO) && totalMoves >= 6)
+        ) {
+          updateGameState();
+          return;
+        }
+        totalMoves++;
+        if (totalMoves >= LAST_MOVE) {
+          updateGameState();
+          return;
+        }
         playTurn();
-      });
-    }
+      }
+    });
   };
 
-  // Play a round of tic-tac-toe
+  // Play a turn of tic-tac-toe
   const playTurn = function () {
     if (playerX.moves === playerO.moves) {
       if (playerX.isHuman) {
@@ -154,12 +169,6 @@ let gameLogic = (function () {
       } else {
         putMarkerRandomly(playerX);
       }
-      if (totalMoves >= 5) {
-        if (isGameOver(playerX)) {
-          return;
-        }
-      }
-      totalMoves++;
       playerX.moves++;
     } else {
       if (playerO.isHuman) {
@@ -167,15 +176,8 @@ let gameLogic = (function () {
       } else {
         putMarkerRandomly(playerO);
       }
-      if (totalMoves >= 6) {
-        if (isGameOver(playerO)) {
-          return;
-        }
-      }
-      totalMoves++;
       playerO.moves++;
     }
-    updateGameState();
   };
 
   // Check if any player is the winner
@@ -248,7 +250,7 @@ let gameLogic = (function () {
     }
   };
 
-  return { createPlayers, playGame };
+  return { createPlayers, playGame, playRound, correlator };
 })();
 
 // MODULE - PLAYERS
@@ -335,7 +337,7 @@ let displayController = (function () {
         playerOName: modalForm.elements['player-o-name'].value,
       };
       gameLogic.createPlayers(playersToCreate);
-      gameLogic.playGame(5);
+      gameLogic.playRound();
     });
   };
   return { init };
