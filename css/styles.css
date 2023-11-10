@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Karla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Gluten:wght@300&family=Karla&display=swap');
 
 :root {
   --main-font: 'Karla', sans-serif;
   --modal-title-font: 'Agbalumo', sans-serif;
+  --marker-font: 'Gluten', sans-serif;
   --main-clr: rgb(255, 185, 55);
 }
 
@@ -10,9 +11,11 @@
   background-color: var(--main-clr);
 }
 
+html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: var(--main-font);
 }
 
@@ -110,6 +113,7 @@ input[type='radio']:checked + label {
 /* Main page rules */
 
 .container {
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 1fr 3fr 1fr;
@@ -133,7 +137,7 @@ main {
 
 footer {
   grid-area: footer;
-  place-self: center;
+  place-self: end center;
 }
 
 .board {
@@ -147,4 +151,17 @@ footer {
   box-sizing: border-box;
   width: 100px;
   height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker {
+  font-family: var(--marker-font);
+  font-size: 5rem;
+}
+
+footer img {
+  height: 16px;
+  width: 16px;
 }
