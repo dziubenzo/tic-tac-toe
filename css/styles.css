@@ -165,3 +165,21 @@ footer img {
   height: 16px;
   width: 16px;
 }
+
+div[data-id='1'],
+div[data-id='2'],
+div[data-id='4'],
+div[data-id='5'],
+div[data-id='7'],
+div[data-id='8'] {
+  border-right: 5px solid black;
+}
+
+div[data-id='1'],
+div[data-id='2'],
+div[data-id='3'],
+div[data-id='4'],
+div[data-id='5'],
+div[data-id='6'] {
+  border-bottom: 5px solid black;
+}
