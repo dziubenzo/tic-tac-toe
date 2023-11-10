@@ -44,9 +44,26 @@ let gameLogic = (function () {
   // Variables for controlling game flow
   let ties = 0;
   let round = 1;
-  let totalMoves = 1;
+  let totalMoves = 0;
   let firstTo = 0;
+  let firstIndex;
+  let secondIndex;
+
+  const DELAY = 500;
   const LAST_MOVE = 9;
+
+  // Create an object to correlate human input with the array item
+  const correlator = {
+    1: [0, 0],
+    2: [0, 1],
+    3: [0, 2],
+    4: [1, 0],
+    5: [1, 1],
+    6: [1, 2],
+    7: [2, 0],
+    8: [2, 1],
+    9: [2, 2],
+  };
 
   // DOM elements
   const playerXName = document.querySelector('header .player-x');
@@ -55,6 +72,7 @@ let gameLogic = (function () {
   const tiesCount = document.querySelector('header .ties-value');
   const scoreX = document.querySelector('.score-x .score');
   const scoreO = document.querySelector('.score-o .score');
+  const boardDOM = document.querySelector('main .board');
 
   // Get a random array index between 0 and 2, both inclusive
   const getRandomIndex = function () {
@@ -78,40 +96,26 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
+  // Listen for square click
+  const listenForClick = function () {
+    boardDOM.addEventListener('click', (event) => {
+      return event.target.getAttribute('data-id');
+    });
+  };
+
+  // Check if the square clicked is a valid one
+  const isEmptySquare = function (square) {
+    firstIndex = correlator[square][0];
+    secondIndex = correlator[square][1];
+    if (board[firstIndex][secondIndex] === empty) {
+      return true;
+    }
+    return false;
+  };
+
   // Put the human player's marker manually
   const putMarkerManually = function (player) {
-    let firstIndex;
-    let secondIndex;
-    // Create an object to correlate human input with the array item
-    const correlator = {
-      1: [0, 0],
-      2: [0, 1],
-      3: [0, 2],
-      4: [1, 0],
-      5: [1, 1],
-      6: [1, 2],
-      7: [2, 0],
-      8: [2, 1],
-      9: [2, 2],
-    };
-    // Make sure the selected board square is empty
-    do {
-      const answer = prompt(
-        `Type a number between 1 and 9 to put your marker. Positions are as follows:
-
-        1  |  2  |  3  
-       ---------------
-        4  |  5  |  6
-       ---------------
-        7  |  8  |  9
-        `
-      );
-      if (answer >= 1 && answer <= 9) {
-        firstIndex = correlator[answer][0];
-        secondIndex = correlator[answer][1];
-      }
-    } while (board[firstIndex][secondIndex] !== empty);
-    // Put the player's marker there
+    // Put the player's marker
     board[firstIndex][secondIndex] = player.marker;
     // Print the board to the console
     gameBoard.showBoard();
@@ -131,36 +135,45 @@ let gameLogic = (function () {
     }
   };
 
+  // Put
+
   // Play a round of tic-tac-toe
   const playRound = function () {
-    while (totalMoves <= LAST_MOVE) {
-      if (playerX.moves === playerO.moves) {
-        if (playerX.isHuman) {
-          putMarkerManually(playerX);
-        } else {
-          putMarkerRandomly(playerX);
-        }
-        if (totalMoves >= 5) {
-          if (isGameOver(playerX)) {
-            break;
-          }
-        }
-        totalMoves++;
-        playerX.moves++;
+    for (totalMoves; totalMoves <= LAST_MOVE; totalMoves++) {
+      boardDOM.addEventListener('click', (event) => {
+        playTurn();
+      });
+    }
+  };
+
+  // Play a round of tic-tac-toe
+  const playTurn = function () {
+    if (playerX.moves === playerO.moves) {
+      if (playerX.isHuman) {
+        putMarkerManually(playerX);
       } else {
-        if (playerO.isHuman) {
-          putMarkerManually(playerO);
-        } else {
-          putMarkerRandomly(playerO);
-        }
-        if (totalMoves >= 6) {
-          if (isGameOver(playerO)) {
-            break;
-          }
-        }
-        totalMoves++;
-        playerO.moves++;
+        putMarkerRandomly(playerX);
       }
+      if (totalMoves >= 5) {
+        if (isGameOver(playerX)) {
+          return;
+        }
+      }
+      totalMoves++;
+      playerX.moves++;
+    } else {
+      if (playerO.isHuman) {
+        putMarkerManually(playerO);
+      } else {
+        putMarkerRandomly(playerO);
+      }
+      if (totalMoves >= 6) {
+        if (isGameOver(playerO)) {
+          return;
+        }
+      }
+      totalMoves++;
+      playerO.moves++;
     }
     updateGameState();
   };
