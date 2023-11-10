@@ -6,6 +6,7 @@
   --marker-font: 'Gluten', sans-serif;
   --main-clr: rgb(255, 185, 55);
   --board-border-clr: rgb(116, 116, 116);
+  --board-size: 250px;
 }
 
 ::selection {
@@ -89,7 +90,6 @@ div[class^='player'] label[for^='player'] {
 }
 
 dialog input[type='radio'] {
-  /* display: none; */
   position: absolute;
   width: 20%;
   appearance: none;
@@ -127,7 +127,11 @@ input[type='radio']:checked + label {
 
 header {
   grid-area: header;
-  place-self: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  place-items: end center;
+  gap: 24px;
+  text-align: center;
 }
 
 main {
@@ -138,25 +142,34 @@ main {
   gap: 24px;
 }
 
+.score-x,
+.score-o {
+  align-self: end;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
 footer {
   grid-area: footer;
   place-self: end center;
+  text-align: center;
 }
 
 .board {
-  width: 300px;
-  height: 300px;
+  width: var(--board-size);
+  height: var(--board-size);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
 
 .square {
   box-sizing: border-box;
-  width: 100px;
-  height: 100px;
+  width: calc(var(--board-size) / 3);
+  height: calc(var(--board-size) / 3);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .marker {
