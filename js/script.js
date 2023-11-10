@@ -7,6 +7,8 @@ let gameBoard = (function () {
     ['e', 'e', 'e'],
   ];
 
+  const markers = document.querySelectorAll('.square span');
+
   // Print the formatted board to the console
   const showBoard = function () {
     console.log(`
@@ -23,8 +25,11 @@ let gameBoard = (function () {
     return board;
   };
 
-  // Clear the board
+  // Clear the board array and the board on the page
   const clearBoard = function () {
+    markers.forEach((square) => {
+      square.textContent = '';
+    });
     board = [
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
@@ -93,7 +98,7 @@ let gameLogic = (function () {
     board[firstIndex][secondIndex] = player.marker;
     // Find correlator's key based on value
     const value = [firstIndex, secondIndex];
-    let key = Object.keys(correlator).filter(
+    let key = Object.keys(correlator).find(
       (key) => JSON.stringify(correlator[key]) === JSON.stringify(value)
     );
 
@@ -141,21 +146,10 @@ let gameLogic = (function () {
 
   // Play a round of tic-tac-toe
   const playRound = function () {
+    setStaticVariables();
     boardDOM.addEventListener('click', (event) => {
       square = event.target.getAttribute('data-id');
       if (isEmptySquare(square)) {
-        if (
-          (isGameOver(playerX) && totalMoves >= 5) ||
-          (isGameOver(playerO) && totalMoves >= 6)
-        ) {
-          updateGameState();
-          return;
-        }
-        totalMoves++;
-        if (totalMoves >= LAST_MOVE) {
-          updateGameState();
-          return;
-        }
         playTurn();
       }
     });
@@ -170,6 +164,15 @@ let gameLogic = (function () {
         putMarkerRandomly(playerX);
       }
       playerX.moves++;
+      totalMoves++;
+      if (
+        (isGameOver(playerX) && totalMoves >= 5) ||
+        totalMoves === LAST_MOVE
+      ) {
+        updateGameState();
+        updateDynamicVariables();
+        return;
+      }
     } else {
       if (playerO.isHuman) {
         putMarkerManually(playerO);
@@ -177,6 +180,15 @@ let gameLogic = (function () {
         putMarkerRandomly(playerO);
       }
       playerO.moves++;
+      totalMoves++;
+      if (
+        (isGameOver(playerO) && totalMoves >= 6) ||
+        totalMoves === LAST_MOVE
+      ) {
+        updateGameState();
+        updateDynamicVariables();
+        return;
+      }
     }
   };
 
@@ -202,7 +214,7 @@ let gameLogic = (function () {
 
   // Update and reset game variables when the game ends
   const updateGameState = function () {
-    totalMoves = 1;
+    totalMoves = 0;
     round++;
     playerX.moves = 0;
     playerO.moves = 0;
@@ -222,8 +234,10 @@ let gameLogic = (function () {
     ${playerO.name}'s score (as O): ${playerO.score}
     Ties: ${ties}
     `);
-    // Clear the board
-    board = gameBoard.clearBoard();
+    // Clear the page board and the board array
+    setTimeout(() => {
+      board = gameBoard.clearBoard();
+    }, 3000);
   };
 
   // Set static variables on the main page
@@ -250,7 +264,7 @@ let gameLogic = (function () {
     }
   };
 
-  return { createPlayers, playGame, playRound, correlator };
+  return { createPlayers, playGame, playRound };
 })();
 
 // MODULE - PLAYERS
