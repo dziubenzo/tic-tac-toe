@@ -14,6 +14,8 @@ body {
   font-family: var(--main-font);
 }
 
+/* Modal rules */
+
 dialog {
   border-radius: 16px;
 }
@@ -100,8 +102,8 @@ input[type='radio']:checked + label {
   border-radius: 12px;
   background-color: var(--main-clr);
   margin-top: 16px;
-}
-
-.submit-button button:hover {
   cursor: pointer;
 }
+
+/* Main page rules */
+

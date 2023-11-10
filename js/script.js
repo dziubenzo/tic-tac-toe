@@ -250,8 +250,8 @@ let players = (function () {
 let displayController = (function () {
   // Init function
   const init = function () {
-    showModal();
-    listenForButtons();
+    // showModal();
+    // listenForButtons();
     startGame();
   };
   // Show modal on page load
