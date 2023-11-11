@@ -97,14 +97,10 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
-  // Check if the square clicked is a valid one
-  const isEmptySquare = function (square) {
+  // Convert the data-id attribute from the DOM element to the indices corresponding to the given array item
+  const convertData = function (square) {
     firstArrayIndex = correlator[square][0];
     secondArrayIndex = correlator[square][1];
-    if (board[firstArrayIndex][secondArrayIndex] === empty) {
-      return true;
-    }
-    return false;
   };
 
   // Put the human player's marker manually
@@ -137,8 +133,11 @@ let gameLogic = (function () {
     displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
     boardDOM.addEventListener('click', (event) => {
       square = event.target.getAttribute('data-id');
-      if (isEmptySquare(square)) {
+      // Allow the game to progress if the board square clicked is an empty one
+      if (square !== null) {
+        convertData(square);
         playTurn();
+        return;
       }
     });
   };
