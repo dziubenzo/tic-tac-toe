@@ -48,7 +48,7 @@ let gameLogic = (function () {
   let totalMoves = 0;
   let endScore, square, firstArrayIndex, secondArrayIndex;
 
-  const DELAY = 500;
+  const DELAY = 1000;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
@@ -224,7 +224,7 @@ let gameLogic = (function () {
       board[2][0] + board[1][1] + board[0][2],
     ];
     if (winningPositions.includes(winningCombination)) {
-      displayController.showWinningCombination(
+      displayController.styleCombination(
         winningPositions.indexOf(winningCombination)
       );
       return true;
@@ -255,8 +255,10 @@ let gameLogic = (function () {
     Ties: ${ties}
     `);
     // Clear the page board and the board array
+    // Remove styling from the winning combination
     setTimeout(() => {
       board = gameBoard.clearBoard();
+      displayController.unstyleCombination();
     }, DELAY);
   };
 
@@ -319,6 +321,7 @@ let displayController = (function () {
   const scoreX = document.querySelector('.score-x .score');
   const scoreO = document.querySelector('.score-o .score');
   const markers = document.querySelectorAll('.square span');
+  let winningCombination;
 
   // Show modal on page load
   const showModal = function () {
@@ -373,8 +376,8 @@ let displayController = (function () {
     });
   };
 
-  // Apply styling to the winning combination
-  const showWinningCombination = function (index) {
+  // Add styling to the winning combination
+  const styleCombination = function (index) {
     const winningSquares = [
       [1, 2, 3],
       [4, 5, 6],
@@ -386,12 +389,22 @@ let displayController = (function () {
       [7, 5, 3],
     ];
     // Determine winning combination
-    const winningCombination = winningSquares[index];
+    winningCombination = winningSquares[index];
     // Add class to the winning board squares
     for (let i = 0; i < 3; i++) {
       document
         .querySelector(`.square[data-id="${winningCombination[i]}"] > span`)
         .classList.add('winner');
+    }
+  };
+
+  // Remove styling from the winning combination
+  const unstyleCombination = function () {
+    // Remove class from the winning board squares
+    for (let i = 0; i < 3; i++) {
+      document
+        .querySelector(`.square[data-id="${winningCombination[i]}"] > span`)
+        .classList.remove('winner');
     }
   };
 
@@ -415,7 +428,8 @@ let displayController = (function () {
     setStaticVariables,
     updateDynamicVariables,
     clearMarkers,
-    showWinningCombination,
+    styleCombination,
+    unstyleCombination,
   };
 })();
 
