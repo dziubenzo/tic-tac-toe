@@ -48,7 +48,7 @@ let gameLogic = (function () {
   let totalMoves = 0;
   let endScore, square, firstArrayIndex, secondArrayIndex;
 
-  const DELAY = 200;
+  const DELAY = 500;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
