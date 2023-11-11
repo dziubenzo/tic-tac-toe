@@ -170,6 +170,10 @@ let gameLogic = (function () {
           playTurn();
           playRound();
         }
+        // Change hoverable classes each turn if both players are human
+        if (playerX.isHuman && playerO.isHuman) {
+          displayController.changeHoverableClass();
+        }
       });
       // Otherwise, the computer plays its turn
     } else {
@@ -396,16 +400,28 @@ let displayController = (function () {
   };
 
   // Make all squares hoverable if at least one player is human
+  // Make sure that only one hoverable class is added
   const makeHoverable = function () {
-    if (playerX.isHuman || (playerX.isHuman && playerO.isHuman)) {
-      squares.forEach((square) => {
+    squares.forEach((square) => {
+      if (playerX.isHuman || (playerX.isHuman && playerO.isHuman)) {
         square.classList.add('hoverable-x');
-      });
-    } else if (playerO.isHuman) {
-      squares.forEach((square) => {
+        square.classList.remove('hoverable-o');
+      } else if (playerO.isHuman) {
         square.classList.add('hoverable-o');
-      });
-    }
+        square.classList.remove('hoverable-x');
+      }
+    });
+  };
+
+  // Change hoverable class to hoverable-x or hoverable-o depending on which one is already added
+  const changeHoverableClass = function () {
+    squares.forEach((square) => {
+      if (square.classList.contains('hoverable-x')) {
+        square.classList.replace('hoverable-x', 'hoverable-o');
+      } else if (square.classList.contains('hoverable-o')) {
+        square.classList.replace('hoverable-o', 'hoverable-x');
+      }
+    });
   };
 
   // Add styling to the winning combination
@@ -463,6 +479,7 @@ let displayController = (function () {
     styleCombination,
     unstyleCombination,
     makeHoverable,
+    changeHoverableClass,
   };
 })();
 
