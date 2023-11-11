@@ -55,7 +55,7 @@ form .form-wrapper {
 
 dialog::backdrop {
   background-color: var(--background-clr);
-  backdrop-filter: blur(4px) grayscale(100%);;
+  backdrop-filter: blur(4px) grayscale(100%);
 }
 
 .form-wrapper p,
@@ -73,7 +73,7 @@ dialog::backdrop {
   width: 71px;
 }
 
-.first-to {
+.form-wrapper.first-to {
   margin-top: 8px;
 }
 

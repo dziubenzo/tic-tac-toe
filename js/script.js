@@ -40,16 +40,13 @@ let gameBoard = (function () {
 let gameLogic = (function () {
   // Variables related to the board
   let board = gameBoard.getBoard();
-  const empty = 'e';
+  const EMPTY = 'e';
 
   // Variables for controlling game flow
   let ties = 0;
   let round = 0;
   let totalMoves = 0;
-  let firstTo = 0;
-  let firstArrayIndex;
-  let secondArrayIndex;
-  let square;
+  let endScore, square, firstArrayIndex, secondArrayIndex;
 
   const DELAY = 200;
   const LAST_MOVE = 9;
@@ -82,7 +79,7 @@ let gameLogic = (function () {
     do {
       firstArrayIndex = getRandomIndex();
       secondArrayIndex = getRandomIndex();
-    } while (board[firstArrayIndex][secondArrayIndex] !== empty);
+    } while (board[firstArrayIndex][secondArrayIndex] !== EMPTY);
     // Add the computer's marker to the array
     board[firstArrayIndex][secondArrayIndex] = player.marker;
     // Find correlator's key based on value
@@ -133,10 +130,10 @@ let gameLogic = (function () {
   const playRound = function () {
     // Run the method only once
     if (round === 0) {
-      displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
+      displayController.setStaticVariables(playerX.name, playerO.name, endScore);
     }
     // Stop execution if the score to end the game is reached
-    if (playerX.score === firstTo || playerO.score === firstTo) {
+    if (playerX.score === endScore || playerO.score === endScore) {
       return console.log('Game Over');
     }
     // Get a valid board square click from the human to play their turn
@@ -256,9 +253,9 @@ let gameLogic = (function () {
     }, DELAY);
   };
 
-  // Play the game until any player reaches scoreToWin
-  const playGame = function (scoreToWin) {
-    firstTo = scoreToWin;
+  // Play the game until any player reaches score
+  const playGame = function (score) {
+    endScore = score;
     playRound();
   };
 
@@ -379,8 +376,9 @@ let displayController = (function () {
         playerXName: modalForm.elements['player-x-name'].value,
         playerOName: modalForm.elements['player-o-name'].value,
       };
+      const gameLength = Number(modalForm.elements['first-to'].value);
       gameLogic.createPlayers(playersToCreate);
-      gameLogic.playGame(5);
+      gameLogic.playGame(gameLength);
     });
   };
   return { init, setStaticVariables, updateDynamicVariables, clearMarkers };
