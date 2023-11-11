@@ -220,6 +220,7 @@ let gameLogic = (function () {
       board[2][0] + board[1][1] + board[0][2],
     ];
     if (winningPositions.includes(winningCombination)) {
+      // console.log(winningPositions);
       return true;
     }
     return false;
