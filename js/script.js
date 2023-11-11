@@ -51,7 +51,7 @@ let gameLogic = (function () {
   let secondArrayIndex;
   let square;
 
-  const DELAY = 1000;
+  const DELAY = 200;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
@@ -132,15 +132,21 @@ let gameLogic = (function () {
   // Play a round of tic-tac-toe
   const playRound = function () {
     displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
-    if (playerX.isHuman && playerX.moves === playerO.moves) {
-      boardDOM.addEventListener('click', (event) => {
+    // Get a valid board click from the human
+    if (
+      (playerX.isHuman && playerX.moves === playerO.moves) ||
+      (playerO.isHuman && playerX.moves > playerO.moves)
+    ) {
+      boardDOM.addEventListener('click', function getValidClick(event) {
         square = event.target.getAttribute('data-id');
-        // Allow the game to progress if the board square clicked is an empty one
         if (square !== null) {
           convertData(square);
+          boardDOM.removeEventListener('click', getValidClick);
           playTurn();
+          playRound();
         }
       });
+      // Otherwise, play the move by the computer
     } else {
       setTimeout(() => {
         playTurn();
