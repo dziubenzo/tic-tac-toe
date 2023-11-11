@@ -23,7 +23,7 @@ let gameBoard = (function () {
     return board;
   };
 
-  // Clear the board array and the board on the page once a round is over
+  // Clear the board array and the markers on the page
   const clearBoard = function () {
     displayController.clearMarkers();
     board = [
@@ -51,6 +51,7 @@ let gameLogic = (function () {
   let secondArrayIndex;
   let square;
 
+  const DELAY = 1000;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
@@ -97,7 +98,7 @@ let gameLogic = (function () {
     gameBoard.showBoard();
   };
 
-  // Convert the data-id attribute from the DOM element to the indices corresponding to the given array item
+  // Convert the data-id attribute from the DOM element to the indices corresponding to a given array item
   const convertData = function (square) {
     firstArrayIndex = correlator[square][0];
     secondArrayIndex = correlator[square][1];
@@ -131,15 +132,21 @@ let gameLogic = (function () {
   // Play a round of tic-tac-toe
   const playRound = function () {
     displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
-    boardDOM.addEventListener('click', (event) => {
-      square = event.target.getAttribute('data-id');
-      // Allow the game to progress if the board square clicked is an empty one
-      if (square !== null) {
-        convertData(square);
+    if (playerX.isHuman && playerX.moves === playerO.moves) {
+      boardDOM.addEventListener('click', (event) => {
+        square = event.target.getAttribute('data-id');
+        // Allow the game to progress if the board square clicked is an empty one
+        if (square !== null) {
+          convertData(square);
+          playTurn();
+        }
+      });
+    } else {
+      setTimeout(() => {
         playTurn();
-        return;
-      }
-    });
+        playRound();
+      }, DELAY);
+    }
   };
 
   // Play a turn of tic-tac-toe
@@ -232,7 +239,7 @@ let gameLogic = (function () {
     // Clear the page board and the board array
     setTimeout(() => {
       board = gameBoard.clearBoard();
-    }, 3000);
+    }, DELAY);
   };
 
   // Play the game until any player reaches scoreToWin
