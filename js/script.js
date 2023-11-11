@@ -7,8 +7,6 @@ let gameBoard = (function () {
     ['e', 'e', 'e'],
   ];
 
-  const markers = document.querySelectorAll('.square span');
-
   // Print the formatted board to the console
   const showBoard = function () {
     console.log(`
@@ -25,11 +23,9 @@ let gameBoard = (function () {
     return board;
   };
 
-  // Clear the board array and the board on the page
+  // Clear the board array and the board on the page once a round is over
   const clearBoard = function () {
-    markers.forEach((square) => {
-      square.textContent = '';
-    });
+    displayController.clearMarkers();
     board = [
       ['e', 'e', 'e'],
       ['e', 'e', 'e'],
@@ -51,11 +47,10 @@ let gameLogic = (function () {
   let round = 1;
   let totalMoves = 0;
   let firstTo = 0;
-  let firstIndex;
-  let secondIndex;
+  let firstArrayIndex;
+  let secondArrayIndex;
   let square;
 
-  const DELAY = 500;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
@@ -71,13 +66,6 @@ let gameLogic = (function () {
     9: [2, 2],
   };
 
-  // DOM elements
-  const playerXName = document.querySelector('header .player-x');
-  const playerOName = document.querySelector('header .player-o');
-  const firstToValue = document.querySelector('header .first-to-value');
-  const tiesCount = document.querySelector('header .ties-value');
-  const scoreX = document.querySelector('.score-x .score');
-  const scoreO = document.querySelector('.score-o .score');
   const boardDOM = document.querySelector('main .board');
 
   // Get a random array index between 0 and 2, both inclusive
@@ -91,13 +79,13 @@ let gameLogic = (function () {
   const putMarkerRandomly = function (player) {
     // Find an empty board square
     do {
-      firstIndex = getRandomIndex();
-      secondIndex = getRandomIndex();
-    } while (board[firstIndex][secondIndex] !== empty);
+      firstArrayIndex = getRandomIndex();
+      secondArrayIndex = getRandomIndex();
+    } while (board[firstArrayIndex][secondArrayIndex] !== empty);
     // Add the computer's marker to the array
-    board[firstIndex][secondIndex] = player.marker;
+    board[firstArrayIndex][secondArrayIndex] = player.marker;
     // Find correlator's key based on value
-    const value = [firstIndex, secondIndex];
+    const value = [firstArrayIndex, secondArrayIndex];
     let key = Object.keys(correlator).find(
       (key) => JSON.stringify(correlator[key]) === JSON.stringify(value)
     );
@@ -111,9 +99,9 @@ let gameLogic = (function () {
 
   // Check if the square clicked is a valid one
   const isEmptySquare = function (square) {
-    firstIndex = correlator[square][0];
-    secondIndex = correlator[square][1];
-    if (board[firstIndex][secondIndex] === empty) {
+    firstArrayIndex = correlator[square][0];
+    secondArrayIndex = correlator[square][1];
+    if (board[firstArrayIndex][secondArrayIndex] === empty) {
       return true;
     }
     return false;
@@ -122,7 +110,7 @@ let gameLogic = (function () {
   // Put the human player's marker manually
   const putMarkerManually = function (player) {
     // Add the player's marker to the array
-    board[firstIndex][secondIndex] = player.marker;
+    board[firstArrayIndex][secondArrayIndex] = player.marker;
     // Display the marker on the board
     document.querySelector(`.square[data-id="${square}"] > span`).textContent =
       player.marker.toLowerCase();
@@ -146,7 +134,7 @@ let gameLogic = (function () {
 
   // Play a round of tic-tac-toe
   const playRound = function () {
-    setStaticVariables();
+    displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
     boardDOM.addEventListener('click', (event) => {
       square = event.target.getAttribute('data-id');
       if (isEmptySquare(square)) {
@@ -170,7 +158,11 @@ let gameLogic = (function () {
         totalMoves === LAST_MOVE
       ) {
         updateGameState();
-        updateDynamicVariables();
+        displayController.updateDynamicVariables(
+          ties,
+          playerX.score,
+          playerO.score
+        );
         return;
       }
     } else {
@@ -186,7 +178,11 @@ let gameLogic = (function () {
         totalMoves === LAST_MOVE
       ) {
         updateGameState();
-        updateDynamicVariables();
+        displayController.updateDynamicVariables(
+          ties,
+          playerX.score,
+          playerO.score
+        );
         return;
       }
     }
@@ -240,27 +236,11 @@ let gameLogic = (function () {
     }, 3000);
   };
 
-  // Set static variables on the main page
-  const setStaticVariables = function () {
-    playerXName.textContent = playerX.name;
-    playerOName.textContent = playerO.name;
-    firstToValue.textContent = firstTo;
-  };
-
-  // Update dynamic variables on the main page
-  const updateDynamicVariables = function () {
-    tiesCount.textContent = ties;
-    scoreX.textContent = playerX.score;
-    scoreO.textContent = playerO.score;
-  };
-
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
     firstTo = scoreToWin;
-    setStaticVariables();
     while (playerX.score < scoreToWin && playerO.score < scoreToWin) {
       playRound();
-      updateDynamicVariables();
     }
   };
 
@@ -308,6 +288,16 @@ let displayController = (function () {
     listenForButtons();
     startGame();
   };
+
+  // DOM elements
+  const playerXName = document.querySelector('header .player-x');
+  const playerOName = document.querySelector('header .player-o');
+  const firstToValue = document.querySelector('header .first-to-value');
+  const tiesCount = document.querySelector('header .ties-value');
+  const scoreX = document.querySelector('.score-x .score');
+  const scoreO = document.querySelector('.score-o .score');
+  const markers = document.querySelectorAll('.square span');
+
   // Show modal on page load
   const showModal = function () {
     const modal = document.querySelector('dialog');
@@ -340,6 +330,27 @@ let displayController = (function () {
     });
   };
 
+  // Set static variables on the main page
+  const setStaticVariables = function (nameX, nameO, scoreToWin) {
+    playerXName.textContent = nameX;
+    playerOName.textContent = nameO;
+    firstToValue.textContent = scoreToWin;
+  };
+
+  // Update dynamic variables on the main page
+  const updateDynamicVariables = function (ties, playerXScore, playerOScore) {
+    tiesCount.textContent = ties;
+    scoreX.textContent = playerXScore;
+    scoreO.textContent = playerOScore;
+  };
+
+  // Clear markers displayed on the page
+  const clearMarkers = function () {
+    markers.forEach((square) => {
+      square.textContent = '';
+    });
+  };
+
   // Use modal form data to create players and start the game
   const startGame = function () {
     const modalForm = document.querySelector('#modal-form');
@@ -354,7 +365,7 @@ let displayController = (function () {
       gameLogic.playRound();
     });
   };
-  return { init };
+  return { init, setStaticVariables, updateDynamicVariables, clearMarkers };
 })();
 
 displayController.init();
