@@ -135,6 +135,10 @@ let gameLogic = (function () {
     if (round === 0) {
       displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
     }
+    // Stop execution if the score to end the game is reached
+    if (playerX.score === firstTo || playerO.score === firstTo) {
+      return console.log('Game Over');
+    }
     // Get a valid board square click from the human to play their turn
     if (
       (playerX.isHuman && playerX.moves === playerO.moves) ||
@@ -255,9 +259,7 @@ let gameLogic = (function () {
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
     firstTo = scoreToWin;
-    if (playerX.score < scoreToWin || playerO.score < scoreToWin) {
-      playRound();
-    }
+    playRound();
   };
 
   return { createPlayers, playGame, playRound };
