@@ -130,7 +130,11 @@ let gameLogic = (function () {
   const playRound = function () {
     // Run the method only once
     if (round === 0) {
-      displayController.setStaticVariables(playerX.name, playerO.name, endScore);
+      displayController.setStaticVariables(
+        playerX.name,
+        playerO.name,
+        endScore
+      );
     }
     // Stop execution if the score to end the game is reached
     if (playerX.score === endScore || playerO.score === endScore) {
@@ -220,7 +224,9 @@ let gameLogic = (function () {
       board[2][0] + board[1][1] + board[0][2],
     ];
     if (winningPositions.includes(winningCombination)) {
-      // console.log(winningPositions);
+      displayController.showWinningCombination(
+        winningPositions.indexOf(winningCombination)
+      );
       return true;
     }
     return false;
@@ -367,6 +373,28 @@ let displayController = (function () {
     });
   };
 
+  // Apply styling to the winning combination
+  const showWinningCombination = function (index) {
+    const winningSquares = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 6, 9],
+      [1, 5, 9],
+      [7, 5, 3],
+    ];
+    // Determine winning combination
+    const winningCombination = winningSquares[index];
+    // Add class to the winning board squares
+    for (let i = 0; i < 3; i++) {
+      document
+        .querySelector(`.square[data-id="${winningCombination[i]}"] > span`)
+        .classList.add('winner');
+    }
+  };
+
   // Use modal form data to create players and start the game
   const startGame = function () {
     const modalForm = document.querySelector('#modal-form');
@@ -382,7 +410,13 @@ let displayController = (function () {
       gameLogic.playGame(gameLength);
     });
   };
-  return { init, setStaticVariables, updateDynamicVariables, clearMarkers };
+  return {
+    init,
+    setStaticVariables,
+    updateDynamicVariables,
+    clearMarkers,
+    showWinningCombination,
+  };
 })();
 
 displayController.init();

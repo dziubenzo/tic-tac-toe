@@ -217,3 +217,8 @@ div[data-id='5'],
 div[data-id='6'] {
   border-bottom: 5px solid var(--board-border-clr);
 }
+
+.winner {
+  color: green;
+  font-weight: bold;
+}
