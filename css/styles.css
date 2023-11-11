@@ -190,7 +190,9 @@ footer {
   cursor: pointer;
 }
 
-.marker {
+.marker,
+.hoverable-x,
+.hoverable-o {
   font-family: var(--marker-font);
   font-size: 6rem;
 }
@@ -220,5 +222,14 @@ div[data-id='6'] {
 
 .winner {
   color: green;
-  font-weight: bold;
+}
+
+.hoverable-x:hover::before {
+  content: 'x';
+  opacity: 0.5;
+}
+
+.hoverable-o:hover::before {
+  content: 'o';
+  opacity: 0.5;
 }

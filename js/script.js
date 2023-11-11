@@ -91,6 +91,16 @@ let gameLogic = (function () {
     // Display the marker on the board
     document.querySelector(`.square[data-id="${key}"] > span`).textContent =
       player.marker.toLowerCase();
+    // Remove hoverable class from the square with the marker
+    if (player.marker === 'X') {
+      document
+        .querySelector(`.square[data-id="${key}"]`)
+        .classList.remove('hoverable-o');
+    } else {
+      document
+        .querySelector(`.square[data-id="${key}"]`)
+        .classList.remove('hoverable-x');
+    }
     // Print the board to the console
     gameBoard.showBoard();
   };
@@ -108,6 +118,11 @@ let gameLogic = (function () {
     // Display the marker on the board
     document.querySelector(`.square[data-id="${square}"] > span`).textContent =
       player.marker.toLowerCase();
+    // Remove hoverable class from the square with the marker
+    document
+      .querySelector(`.square[data-id="${square}"]`)
+      .classList.remove(`hoverable-${player.marker.toLowerCase()}`);
+
     // Print the board to the console
     gameBoard.showBoard();
   };
@@ -124,6 +139,7 @@ let gameLogic = (function () {
     } else {
       playerO = players.createComputerPlayer('O');
     }
+    displayController.makeHoverable();
   };
 
   // Play a round of tic-tac-toe
@@ -256,9 +272,11 @@ let gameLogic = (function () {
     `);
     // Clear the page board and the board array
     // Remove styling from the winning combination
+    // Add hoverable class to all the squares
     setTimeout(() => {
       board = gameBoard.clearBoard();
       displayController.unstyleCombination();
+      displayController.makeHoverable();
     }, DELAY);
   };
 
@@ -321,6 +339,7 @@ let displayController = (function () {
   const scoreX = document.querySelector('.score-x .score');
   const scoreO = document.querySelector('.score-o .score');
   const markers = document.querySelectorAll('.square span');
+  const squares = document.querySelectorAll('.square');
   let winningCombination;
 
   // Show modal on page load
@@ -371,9 +390,22 @@ let displayController = (function () {
 
   // Clear markers displayed on the page
   const clearMarkers = function () {
-    markers.forEach((square) => {
-      square.textContent = '';
+    markers.forEach((marker) => {
+      marker.textContent = '';
     });
+  };
+
+  // Make all squares hoverable if at least one player is human
+  const makeHoverable = function () {
+    if (playerX.isHuman || (playerX.isHuman && playerO.isHuman)) {
+      squares.forEach((square) => {
+        square.classList.add('hoverable-x');
+      });
+    } else if (playerO.isHuman) {
+      squares.forEach((square) => {
+        square.classList.add('hoverable-o');
+      });
+    }
   };
 
   // Add styling to the winning combination
@@ -430,6 +462,7 @@ let displayController = (function () {
     clearMarkers,
     styleCombination,
     unstyleCombination,
+    makeHoverable,
   };
 })();
 
