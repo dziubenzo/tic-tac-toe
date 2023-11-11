@@ -132,21 +132,22 @@ let gameLogic = (function () {
   // Play a round of tic-tac-toe
   const playRound = function () {
     displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
-    // Get a valid board click from the human
+    // Get a valid board square click from the human to play their turn
     if (
       (playerX.isHuman && playerX.moves === playerO.moves) ||
       (playerO.isHuman && playerX.moves > playerO.moves)
     ) {
       boardDOM.addEventListener('click', function getValidClick(event) {
         square = event.target.getAttribute('data-id');
-        if (square !== null) {
+        let marker = event.target.querySelector('.marker');
+        if (square !== null && marker.textContent === '') {
           convertData(square);
           boardDOM.removeEventListener('click', getValidClick);
           playTurn();
           playRound();
         }
       });
-      // Otherwise, play the move by the computer
+      // Otherwise, the computer plays its turn
     } else {
       setTimeout(() => {
         playTurn();
