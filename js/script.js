@@ -380,7 +380,6 @@ let displayController = (function () {
         playerOName: modalForm.elements['player-o-name'].value,
       };
       gameLogic.createPlayers(playersToCreate);
-      // gameLogic.playRound();
       gameLogic.playGame(5);
     });
   };

@@ -59,7 +59,8 @@ dialog::backdrop {
 }
 
 .form-wrapper p,
-.name-label label {
+.name-label label,
+.first-to-label label {
   font-weight: bold;
 }
 
@@ -67,8 +68,19 @@ dialog::backdrop {
   grid-area: 2 / 2 / 3 / 4;
 }
 
+.form-wrapper .first-to-input {
+  grid-column: 2 / 4;
+  width: 71px;
+}
+
+.first-to {
+  margin-top: 8px;
+}
+
 .name-input input,
-.name-input input:focus {
+.name-input input:focus,
+.first-to-input input,
+.first-to-input input:focus {
   box-sizing: border-box;
   width: 100%;
   outline: none;
@@ -77,7 +89,11 @@ dialog::backdrop {
   font-family: var(--main-font);
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid rgb(211, 211, 211);
+  border: 1px solid var(--main-clr);
+}
+
+.first-to-input input {
+  text-align: center;
 }
 
 div[class^='player'] {
