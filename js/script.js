@@ -153,7 +153,9 @@ let gameLogic = (function () {
       );
     }
     // Stop execution if the score to end the game is reached
+    // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
+      displayController.removeHoverableClass();
       return console.log('Game Over');
     }
     // Get a valid board square click from the human to play their turn
@@ -274,13 +276,13 @@ let gameLogic = (function () {
     ${playerO.name}'s score (as O): ${playerO.score}
     Ties: ${ties}
     `);
+    // Add hoverable class to all squares
+    displayController.makeHoverable();
     // Clear the page board and the board array
     // Remove styling from the winning combination
-    // Add hoverable class to all the squares
     setTimeout(() => {
       board = gameBoard.clearBoard();
       displayController.unstyleCombination();
-      displayController.makeHoverable();
     }, DELAY);
   };
 
@@ -413,7 +415,7 @@ let displayController = (function () {
     });
   };
 
-  // Change hoverable class to hoverable-x or hoverable-o depending on which one is already added
+  // Change hoverable classes to hoverable-x or hoverable-o depending on which one is already added to the square
   const changeHoverableClass = function () {
     squares.forEach((square) => {
       if (square.classList.contains('hoverable-x')) {
@@ -421,6 +423,14 @@ let displayController = (function () {
       } else if (square.classList.contains('hoverable-o')) {
         square.classList.replace('hoverable-o', 'hoverable-x');
       }
+    });
+  };
+
+  // Remove hoverable classes when the game is over
+  const removeHoverableClass = function () {
+    squares.forEach((square) => {
+      square.classList.remove('hoverable-x');
+      square.classList.remove('hoverable-o');
     });
   };
 
@@ -480,6 +490,7 @@ let displayController = (function () {
     unstyleCombination,
     makeHoverable,
     changeHoverableClass,
+    removeHoverableClass,
   };
 })();
 
