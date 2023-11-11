@@ -44,7 +44,7 @@ let gameLogic = (function () {
 
   // Variables for controlling game flow
   let ties = 0;
-  let round = 1;
+  let round = 0;
   let totalMoves = 0;
   let firstTo = 0;
   let firstArrayIndex;
@@ -131,7 +131,10 @@ let gameLogic = (function () {
 
   // Play a round of tic-tac-toe
   const playRound = function () {
-    displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
+    // Run the method only once
+    if (round === 0) {
+      displayController.setStaticVariables(playerX.name, playerO.name, firstTo);
+    }
     // Get a valid board square click from the human to play their turn
     if (
       (playerX.isHuman && playerX.moves === playerO.moves) ||
@@ -238,7 +241,7 @@ let gameLogic = (function () {
       ties++;
     }
     console.log(`
-    Round: ${round - 1}
+    Round: ${round}
     ${playerX.name}'s score (as X): ${playerX.score}
     ${playerO.name}'s score (as O): ${playerO.score}
     Ties: ${ties}
@@ -252,7 +255,7 @@ let gameLogic = (function () {
   // Play the game until any player reaches scoreToWin
   const playGame = function (scoreToWin) {
     firstTo = scoreToWin;
-    while (playerX.score < scoreToWin && playerO.score < scoreToWin) {
+    if (playerX.score < scoreToWin || playerO.score < scoreToWin) {
       playRound();
     }
   };
@@ -375,7 +378,8 @@ let displayController = (function () {
         playerOName: modalForm.elements['player-o-name'].value,
       };
       gameLogic.createPlayers(playersToCreate);
-      gameLogic.playRound();
+      // gameLogic.playRound();
+      gameLogic.playGame(5);
     });
   };
   return { init, setStaticVariables, updateDynamicVariables, clearMarkers };
