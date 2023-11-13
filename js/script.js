@@ -139,7 +139,7 @@ let gameLogic = (function () {
     // Stop execution if the score to end the game is reached
     // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
-      return displayController.showGameOverModal(playerX, playerO, endScore, round);
+      return;
     }
     // Get a valid board square click from the human to play their turn
     if (
@@ -252,12 +252,14 @@ let gameLogic = (function () {
     }
     // Clear the page board and the board array
     // Remove styling from the winning combination
-    // Add hoverable class to all squares or remove all hoverable classes if the game is over
+    // Add hoverable class to all squares or remove all hoverable classes when the game is over
+    // Display game over modal when the game is over
     setTimeout(() => {
       board = gameBoard.clearBoard();
       displayController.unstyleCombination();
       if (playerX.score === endScore || playerO.score === endScore) {
         displayController.removeHoverableClass();
+        displayController.showGameOverModal(playerX, playerO, endScore, round);
       } else {
         displayController.makeHoverable(playerX, playerO);
       }
