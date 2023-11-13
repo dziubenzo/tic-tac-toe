@@ -179,8 +179,8 @@ let gameLogic = (function () {
       playerX.moves++;
       totalMoves++;
       if (
-        (isGameOver(playerX) && totalMoves >= 5 ||
-        totalMoves === LAST_MOVE)
+        (isGameOver(playerX) && totalMoves >= 5) ||
+        totalMoves === LAST_MOVE
       ) {
         updateGameState();
         displayController.updateDynamicVariables(
@@ -199,8 +199,8 @@ let gameLogic = (function () {
       playerO.moves++;
       totalMoves++;
       if (
-        (isGameOver(playerO) && totalMoves >= 6 ||
-        totalMoves === LAST_MOVE)
+        (isGameOver(playerO) && totalMoves >= 6) ||
+        totalMoves === LAST_MOVE
       ) {
         updateGameState();
         displayController.updateDynamicVariables(
@@ -326,7 +326,7 @@ let displayController = (function () {
   const markers = document.querySelectorAll('.square span');
   const squares = document.querySelectorAll('.square');
   const restartBtn = document.querySelector('.restart-button');
-  let winningCombination;
+  let winningCombination = [1, 2, 3];
 
   // Refresh the page if the restart button is clicked
   restartBtn.addEventListener('click', () => {
