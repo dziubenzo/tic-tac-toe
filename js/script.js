@@ -46,9 +46,9 @@ let gameLogic = (function () {
   let ties = 0;
   let round = 0;
   let totalMoves = 0;
-  let endScore, square, firstArrayIndex, secondArrayIndex;
+  let playerX, playerO, endScore, square, firstArrayIndex, secondArrayIndex;
 
-  const DELAY = 1000;
+  const DELAY = 100;
   const LAST_MOVE = 9;
 
   // Create an object to correlate human input with the array item
@@ -139,7 +139,7 @@ let gameLogic = (function () {
     } else {
       playerO = players.createComputerPlayer('O');
     }
-    displayController.makeHoverable();
+    displayController.makeHoverable(playerX, playerO);
   };
 
   // Play a round of tic-tac-toe
@@ -155,7 +155,6 @@ let gameLogic = (function () {
     // Stop execution if the score to end the game is reached
     // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
-      displayController.removeHoverableClass();
       return console.log('Game Over');
     }
     // Get a valid board square click from the human to play their turn
@@ -254,7 +253,7 @@ let gameLogic = (function () {
     return false;
   };
 
-  // Update and reset game variables when the game ends
+  // Update and reset game variables when the round ends
   const updateGameState = function () {
     totalMoves = 0;
     round++;
@@ -276,13 +275,17 @@ let gameLogic = (function () {
     ${playerO.name}'s score (as O): ${playerO.score}
     Ties: ${ties}
     `);
-    // Add hoverable class to all squares
-    displayController.makeHoverable();
     // Clear the page board and the board array
     // Remove styling from the winning combination
+    // Add hoverable class to all squares or remove all hoverable classes if the game is over
     setTimeout(() => {
       board = gameBoard.clearBoard();
       displayController.unstyleCombination();
+      if (playerX.score === endScore || playerO.score === endScore) {
+        displayController.removeHoverableClass();
+      } else {
+        displayController.makeHoverable(playerX, playerO);
+      }
     }, DELAY);
   };
 
@@ -403,9 +406,9 @@ let displayController = (function () {
 
   // Make all squares hoverable if at least one player is human
   // Make sure that only one hoverable class is added
-  const makeHoverable = function () {
+  const makeHoverable = function (playerX, playerO) {
     squares.forEach((square) => {
-      if (playerX.isHuman || (playerX.isHuman && playerO.isHuman)) {
+      if (playerX.isHuman) {
         square.classList.add('hoverable-x');
         square.classList.remove('hoverable-o');
       } else if (playerO.isHuman) {
