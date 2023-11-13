@@ -170,10 +170,10 @@ let gameLogic = (function () {
           boardDOM.removeEventListener('click', getValidClick);
           playTurn();
           playRound();
-        }
-        // Change hoverable classes each turn if both players are human
-        if (playerX.isHuman && playerO.isHuman) {
-          displayController.changeHoverableClass();
+          // Change hoverable classes each turn if both players are human
+          if (playerX.isHuman && playerO.isHuman) {
+            displayController.changeHoverableClass();
+          }
         }
       });
       // Otherwise, the computer plays its turn
