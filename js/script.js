@@ -137,7 +137,6 @@ let gameLogic = (function () {
       );
     }
     // Stop execution if the score to end the game is reached
-    // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
       return;
     }
@@ -180,8 +179,8 @@ let gameLogic = (function () {
       playerX.moves++;
       totalMoves++;
       if (
-        (isGameOver(playerX) && totalMoves >= 5) ||
-        totalMoves === LAST_MOVE
+        (isGameOver(playerX) && totalMoves >= 5 ||
+        totalMoves === LAST_MOVE)
       ) {
         updateGameState();
         displayController.updateDynamicVariables(
@@ -200,8 +199,8 @@ let gameLogic = (function () {
       playerO.moves++;
       totalMoves++;
       if (
-        (isGameOver(playerO) && totalMoves >= 6) ||
-        totalMoves === LAST_MOVE
+        (isGameOver(playerO) && totalMoves >= 6 ||
+        totalMoves === LAST_MOVE)
       ) {
         updateGameState();
         displayController.updateDynamicVariables(
