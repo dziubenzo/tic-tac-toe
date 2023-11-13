@@ -1,5 +1,5 @@
 # Odin Project - Tic-Tac-Toe
-A minimalistic implementation of the classic game of tic-tac-toe. For live demo, click [here] (https://dziubenzo.github.io/tic-tac-toe/).
+A minimalistic implementation of the classic game of tic-tac-toe. For live demo, click [here](https://dziubenzo.github.io/tic-tac-toe/).
 
 ## Features
 * Play against a computer player, another human or let two computer players battle it out
