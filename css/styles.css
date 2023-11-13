@@ -160,6 +160,11 @@ input[type='radio']:checked + label {
   font-weight: bold;
 }
 
+.winning-player-marker {
+  font-weight: normal;
+  font-family: var(--marker-font);
+}
+
 /* Main page rules */
 
 .container {
