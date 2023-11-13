@@ -233,3 +233,9 @@ div[data-id='6'] {
   content: 'o';
   opacity: 0.5;
 }
+
+.restart-button {
+  position: fixed;
+  bottom: 2vh;
+  right: 2vw;
+}
