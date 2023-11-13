@@ -8,7 +8,7 @@
   --background-clr: rgb(40, 40, 40);
   --board-clr: rgb(116, 116, 116);
   --selection-clr: rgb(116, 116, 116);
-  --board-size: 250px;
+  --board-size: 300px;
 }
 
 ::selection {
@@ -212,7 +212,7 @@ footer {
 .hoverable-x,
 .hoverable-o {
   font-family: var(--marker-font);
-  font-size: 6rem;
+  font-size: 7rem;
 }
 
 footer a[href="https://github.com/dziubenzo"]
@@ -236,7 +236,7 @@ footer a[href="https://icons8.com/"]
 
 .restart-button {
   position: fixed;
-  bottom: 24px;
+  bottom: 16px;
   right: 24px;
   height: 70px;
   width: 70px;
@@ -278,4 +278,59 @@ div[data-id='6'] {
 .hoverable-o:hover::before {
   content: 'o';
   opacity: 0.5;
+}
+
+@media (width <= 768px) {
+  :root {
+    --board-size: 200px;
+  }
+
+  .container {
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+      'header  header header'
+      'main    main   main'
+      'footer  footer footer';
+  }
+
+  .restart-button {
+    position: fixed;
+    right: 6px;
+  }
+
+  .marker,
+  .hoverable-x,
+  .hoverable-o {
+    font-size: 4rem;
+  }
+
+  .score-x,
+  .score-o {
+    align-self: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  header {
+    grid-area: header;
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+    place-items: end center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .container .player-x,
+  .container .player-o,
+  .container .first-to-value,
+  .container .ties-value {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+
+  /* footer {
+    grid-area: footer;
+    place-self: start center;
+    text-align: center;
+  } */
 }
