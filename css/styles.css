@@ -136,8 +136,8 @@ input[type='radio']:checked + label {
 
 .restart-button {
   position: fixed;
-  bottom: 2vh;
-  right: 2vw;
+  bottom: 24px;
+  right: 24px;
   height: 70px;
   width: 70px;
   display: flex;

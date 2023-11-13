@@ -352,16 +352,20 @@ let displayController = (function () {
   const restartBtn = document.querySelector('.restart-button');
   let winningCombination;
 
+  // Refresh the page if the restart button is clicked
+  restartBtn.addEventListener('click', () => {
+    window.location.reload();
+  });
+
   // Show modal on page load
   const showModal = function () {
     const modal = document.querySelector('dialog');
     modal.showModal();
+    // Prevent modal from closing on pressing the Esc key
+    modal.addEventListener('cancel', (event) => {
+      event.preventDefault();
+    });
   };
-
-  // Refresh the page if the restart button is clicked
-  restartBtn.addEventListener('click', () => {
-    window.location.reload();
-  })
 
   // Show or hide the name input field and label when the human or computer button is clicked
   const listenForButtons = function () {
