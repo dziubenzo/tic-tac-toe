@@ -9,7 +9,7 @@
     <script src="./js/script.js" defer></script>
   </head>
   <body>
-    <dialog>
+    <dialog id="starting-modal">
       <div class="modal-container">
         <p class="modal-title">Tic-Tac-Toe</p>
         <form id="modal-form" action="#" method="dialog">
@@ -156,5 +156,13 @@
     <div class="restart-button">
       <p>Restart</p>
     </div>
+    <dialog id="game-over-modal">
+      <div class="modal-container">
+        <p>Game Over</p>
+        <p>The winner is...</p>
+        <p class="winning-player"></p>
+        <button>Play New Game</button>
+      </div>
+    </dialog>
   </body>
 </html>

@@ -310,8 +310,9 @@ let players = (function () {
 let displayController = (function () {
   // Init function
   const init = function () {
-    showModal();
-    listenForButtons();
+    // showStartingModal();
+    // listenForButtons();
+    showGameOverModal();
     startGame();
   };
 
@@ -332,15 +333,21 @@ let displayController = (function () {
     window.location.reload();
   });
 
-  // Show modal on page load
-  const showModal = function () {
-    const modal = document.querySelector('dialog');
-    modal.showModal();
+  // Show starting modal on page load
+  const showStartingModal = function () {
+    const startingModal = document.querySelector('#starting-modal');
+    startingModal.showModal();
     // Prevent modal from closing on pressing the Esc key
-    modal.addEventListener('cancel', (event) => {
+    startingModal.addEventListener('cancel', (event) => {
       event.preventDefault();
     });
   };
+
+  // Show game over modal
+  const showGameOverModal = function () {
+    const gameOverModal = document.querySelector('#game-over-modal');
+    gameOverModal.showModal();
+  }
 
   // Show or hide the name input field and label when the human or computer button is clicked
   const listenForButtons = function () {
