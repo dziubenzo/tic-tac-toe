@@ -37,7 +37,8 @@ dialog {
   display: grid;
 }
 
-.modal-title {
+.modal-title,
+.modal-container p:first-child {
   font-family: var(--modal-title-font);
   place-self: center;
   font-size: 2rem;
@@ -124,7 +125,8 @@ input[type='radio']:checked + label {
 }
 
 .submit-button button,
-.restart-button {
+.restart-button,
+#game-over-modal button[type="button"] {
   font-family: var(--main-font);
   font-weight: bold;
   border: 1px solid var(--main-clr);
@@ -134,10 +136,29 @@ input[type='radio']:checked + label {
 
 .submit-button button {
   grid-column: 1 / 4;
+}
+
+.submit-button button,
+#game-over-modal button[type="button"] {
   height: 50px;
   font-size: 1.4rem;
   border-radius: 12px;
   margin-top: 16px;
+}
+
+#game-over-modal .modal-container {
+  justify-items: center;
+}
+
+#game-over-modal p {
+  margin: 8px;
+}
+
+.winning-player,
+.winning-player-marker,
+.rounds {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 /* Main page rules */
