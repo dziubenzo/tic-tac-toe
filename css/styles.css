@@ -37,8 +37,7 @@ dialog {
   display: grid;
 }
 
-.modal-title,
-.modal-container p:first-child {
+.modal-title {
   font-family: var(--modal-title-font);
   place-self: center;
   font-size: 2rem;
@@ -126,7 +125,7 @@ input[type='radio']:checked + label {
 
 .submit-button button,
 .restart-button,
-#game-over-modal button[type="button"] {
+#game-over-modal button[type='button'] {
   font-family: var(--main-font);
   font-weight: bold;
   border: 1px solid var(--main-clr);
@@ -139,7 +138,7 @@ input[type='radio']:checked + label {
 }
 
 .submit-button button,
-#game-over-modal button[type="button"] {
+#game-over-modal button {
   height: 50px;
   font-size: 1.4rem;
   border-radius: 12px;

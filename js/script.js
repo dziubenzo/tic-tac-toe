@@ -139,7 +139,7 @@ let gameLogic = (function () {
     // Stop execution if the score to end the game is reached
     // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
-      return;
+      return displayController.showGameOverModal(playerX, playerO, endScore, round);
     }
     // Get a valid board square click from the human to play their turn
     if (
@@ -310,9 +310,8 @@ let players = (function () {
 let displayController = (function () {
   // Init function
   const init = function () {
-    // showStartingModal();
-    // listenForButtons();
-    showGameOverModal();
+    showStartingModal();
+    listenForButtons();
     startGame();
   };
 
@@ -344,10 +343,27 @@ let displayController = (function () {
   };
 
   // Show game over modal
-  const showGameOverModal = function () {
+  // Display winner details and rounds played
+  // Refresh the page if the start new game button is clicked
+  const showGameOverModal = function (playerX, playerO, endScore, rounds) {
     const gameOverModal = document.querySelector('#game-over-modal');
+    const winner = document.querySelector('.winning-player');
+    const winnerMarker = document.querySelector('.winning-player-marker');
+    const roundsPlayed = document.querySelector('.rounds');
+    const newGameButton = document.querySelector('#game-over-modal button');
     gameOverModal.showModal();
-  }
+    if (playerX.score === endScore) {
+      winner.textContent = playerX.name;
+      winnerMarker.textContent = playerX.marker;
+    } else {
+      winner.textContent = playerO.name;
+      winnerMarker.textContent = playerO.marker;
+    }
+    roundsPlayed.textContent = rounds;
+    newGameButton.addEventListener('click', () => {
+      window.location.reload();
+    });
+  };
 
   // Show or hide the name input field and label when the human or computer button is clicked
   const listenForButtons = function () {
@@ -486,6 +502,7 @@ let displayController = (function () {
     makeHoverable,
     changeHoverableClass,
     removeHoverableClass,
+    showGameOverModal,
   };
 })();
 
