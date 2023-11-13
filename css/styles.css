@@ -117,17 +117,34 @@ input[type='radio']:checked + label {
   background-color: var(--main-clr);
 }
 
+.submit-button button,
+.restart-button {
+  font-family: var(--main-font);
+  font-weight: bold;
+  border: 1px solid var(--main-clr);
+  background-color: var(--main-clr);
+  cursor: pointer;
+}
+
 .submit-button button {
   grid-column: 1 / 4;
   height: 50px;
-  font-family: var(--main-font);
   font-size: 1.4rem;
-  font-weight: bold;
-  border: 1px solid var(--main-clr);
   border-radius: 12px;
-  background-color: var(--main-clr);
   margin-top: 16px;
-  cursor: pointer;
+}
+
+.restart-button {
+  position: fixed;
+  bottom: 2vh;
+  right: 2vw;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1rem;
 }
 
 /* Main page rules */
@@ -232,10 +249,4 @@ div[data-id='6'] {
 .hoverable-o:hover::before {
   content: 'o';
   opacity: 0.5;
-}
-
-.restart-button {
-  position: fixed;
-  bottom: 2vh;
-  right: 2vw;
 }

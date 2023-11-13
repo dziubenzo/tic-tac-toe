@@ -349,6 +349,7 @@ let displayController = (function () {
   const scoreO = document.querySelector('.score-o .score');
   const markers = document.querySelectorAll('.square span');
   const squares = document.querySelectorAll('.square');
+  const restartBtn = document.querySelector('.restart-button');
   let winningCombination;
 
   // Show modal on page load
@@ -356,6 +357,11 @@ let displayController = (function () {
     const modal = document.querySelector('dialog');
     modal.showModal();
   };
+
+  // Refresh the page if the restart button is clicked
+  restartBtn.addEventListener('click', () => {
+    window.location.reload();
+  })
 
   // Show or hide the name input field and label when the human or computer button is clicked
   const listenForButtons = function () {
