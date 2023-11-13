@@ -327,10 +327,4 @@ div[data-id='6'] {
     font-size: 1.1rem;
     margin-bottom: 0;
   }
-
-  /* footer {
-    grid-area: footer;
-    place-self: start center;
-    text-align: center;
-  } */
 }

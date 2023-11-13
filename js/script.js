@@ -7,17 +7,6 @@ let gameBoard = (function () {
     ['e', 'e', 'e'],
   ];
 
-  // Print the formatted board to the console
-  const showBoard = function () {
-    console.log(`
-      ${board[0][0]}  |  ${board[0][1]}  |  ${board[0][2]}
-    -----|-----|-----
-      ${board[1][0]}  |  ${board[1][1]}  |  ${board[1][2]}
-    -----|-----|-----
-      ${board[2][0]}  |  ${board[2][1]}  |  ${board[2][2]}
-    `);
-  };
-
   // Get the board
   const getBoard = function () {
     return board;
@@ -33,7 +22,7 @@ let gameBoard = (function () {
     ];
     return board;
   };
-  return { showBoard, getBoard, clearBoard };
+  return { getBoard, clearBoard };
 })();
 
 // MODULE - GAME LOGIC
@@ -101,8 +90,6 @@ let gameLogic = (function () {
         .querySelector(`.square[data-id="${key}"]`)
         .classList.remove('hoverable-x');
     }
-    // Print the board to the console
-    gameBoard.showBoard();
   };
 
   // Convert the data-id attribute from the DOM element to the indices corresponding to a given array item
@@ -122,9 +109,6 @@ let gameLogic = (function () {
     document
       .querySelector(`.square[data-id="${square}"]`)
       .classList.remove(`hoverable-${player.marker.toLowerCase()}`);
-
-    // Print the board to the console
-    gameBoard.showBoard();
   };
 
   // Create the right players based on modal form data
@@ -155,7 +139,7 @@ let gameLogic = (function () {
     // Stop execution if the score to end the game is reached
     // Remove hoverable classes from the squares
     if (playerX.score === endScore || playerO.score === endScore) {
-      return console.log('Game Over');
+      return;
     }
     // Get a valid board square click from the human to play their turn
     if (
@@ -260,21 +244,12 @@ let gameLogic = (function () {
     playerX.moves = 0;
     playerO.moves = 0;
     if (isGameOver(playerX)) {
-      console.log(`${playerX.name} wins!`);
       playerX.score++;
     } else if (isGameOver(playerO)) {
-      console.log(`${playerO.name} wins!`);
       playerO.score++;
     } else {
-      console.log('Tie!');
       ties++;
     }
-    console.log(`
-    Round: ${round}
-    ${playerX.name}'s score (as X): ${playerX.score}
-    ${playerO.name}'s score (as O): ${playerO.score}
-    Ties: ${ties}
-    `);
     // Clear the page board and the board array
     // Remove styling from the winning combination
     // Add hoverable class to all squares or remove all hoverable classes if the game is over
