@@ -326,11 +326,17 @@ div[data-id='6'] {
   header p[class="player-x"] {
     place-self: end start;
     padding-left: 8px;
+    padding-bottom: 24px;
   }
 
   header p[class="player-o"] {
     place-self: end end;
     padding-right: 8px;
+    padding-bottom: 24px;
+  }
+
+  main {
+    gap: 12px;
   }
 
   .restart-button {
@@ -353,7 +359,7 @@ div[data-id='6'] {
 
   .score-x,
   .score-o {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .score-x {
