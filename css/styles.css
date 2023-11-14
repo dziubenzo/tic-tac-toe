@@ -323,10 +323,14 @@ div[data-id='6'] {
     right: 6px;
   }
 
-  .marker,
-  .hoverable-x,
-  .hoverable-o {
+  .marker {
     font-size: 4rem;
+  }
+
+  .hoverable-x:hover::before,
+  .hoverable-o:hover::before {
+    content: none;
+    opacity: none;
   }
 
   .score-x,
