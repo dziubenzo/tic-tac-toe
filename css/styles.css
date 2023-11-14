@@ -318,9 +318,31 @@ div[data-id='6'] {
       'footer  footer footer';
   }
 
+  header {
+    grid-template-columns: 2fr 1fr 2fr;
+    place-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  header p[class="player-x"] {
+    place-self: end start;
+  }
+
+  header p[class="player-o"] {
+    place-self: end end;
+  }
+
   .restart-button {
     position: fixed;
     right: 6px;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 1rem;
   }
 
   .marker {
@@ -338,15 +360,6 @@ div[data-id='6'] {
     align-self: center;
     font-size: 2.5rem;
     font-weight: bold;
-  }
-
-  header {
-    grid-area: header;
-    display: grid;
-    grid-template-columns: 1fr 200px 1fr;
-    place-items: end center;
-    gap: 24px;
-    text-align: center;
   }
 
   .container .player-x,
