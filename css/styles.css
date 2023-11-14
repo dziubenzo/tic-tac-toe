@@ -320,7 +320,7 @@ div[data-id='6'] {
 
   header {
     grid-template-columns: 2fr 1fr 2fr;
-    place-items: center;
+    place-items: end center;
   }
 
   header p[class='player-x'] {
